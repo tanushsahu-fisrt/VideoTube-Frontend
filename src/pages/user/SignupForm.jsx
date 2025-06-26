@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Header from '../../components/Header';
 
 const SignupForm = () => {
   const [formData, setFormData] = useState({
@@ -35,8 +36,12 @@ const SignupForm = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
-      <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-lg">
+    <>
+  
+    <Header />
+    <div className="overflow-hidden bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 flex items-center justify-center">
+
+      <div className="bg-white p-6 rounded-2xl shadow-xl w-full max-w-lg">
         <h2 className="text-2xl font-bold mb-6 text-gray-800 text-center">Create Your Account</h2>
         <form onSubmit={handleSubmit} className="space-y-4" encType="multipart/form-data">
           <div>
@@ -115,6 +120,8 @@ const SignupForm = () => {
         </p>
       </div>
     </div>
+      
+    </>
   );
 };
 
