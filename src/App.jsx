@@ -1,13 +1,13 @@
+import { BrowserRouter } from "react-router-dom"
+import UserRoutes from "./routes/UserRoutes"
 
-function App() {
+const App = () => {
  
-
   return (
     <>
-      <h1
-      className="text-3xl bg-red-400 font-bold underline"
-      >hii
-      </h1>
+      <BrowserRouter>
+        <UserRoutes />
+      </BrowserRouter>
     </>
   )
 }
