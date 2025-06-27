@@ -5,43 +5,48 @@ import { useNavigate } from 'react-router-dom';
 const VideoCard = ({ video }) => {
   const { isLogin } = useAuth();
   const navigate = useNavigate();
+
+  const handleVideoClick = (id) => {
+    navigate(`/user/video/${id}`,{ state : {video : video } })
+  }
+
   return (
     <div className="w-full sm:w-64 bg-white rounded-lg overflow-hidden shadow-md">
       {isLogin ? (
-        <div>
+        <div onClick={() => handleVideoClick(video?._id)}>
           <img
-            src={video.thumbnail}
-            alt={video.title}
+            src={video?.thumbnail}
+            alt={video?.title}
             className="w-full h-36 object-cover"
           />
           <div className="p-3">
             <h3 className="text-sm font-semibold mb-1 truncate">
-              {video.title}
+              {video?.title}
             </h3>
             <p className="text-xs text-gray-600 line-clamp-2">
-              {video.description}
+              {video?.description}
             </p>
             <p className="text-xs text-gray-500 mt-1">
-              {Math.round(video.duration)} sec • {video.views} views
+              {Math.round(video?.duration)} sec • {video?.views} views
             </p>
           </div>
         </div>
       ) : (
         <div onClick={() => navigate('/user/login')}>
           <img
-            src={video.thumbnail}
-            alt={video.title}
+            src={video?.thumbnail}
+            alt={video?.title}
             className="w-full h-36 object-cover"
           />
           <div className="p-3">
             <h3 className="text-sm font-semibold mb-1 truncate">
-              {video.title}
+              {video?.title}
             </h3>
             <p className="text-xs text-gray-600 line-clamp-2">
-              {video.description}
+              {video?.description}
             </p>
             <p className="text-xs text-gray-500 mt-1">
-              {Math.round(video.duration)} sec • {video.views} views
+              {Math.round(video?.duration)} sec • {video?.views} views
             </p>
           </div>
         </div>
