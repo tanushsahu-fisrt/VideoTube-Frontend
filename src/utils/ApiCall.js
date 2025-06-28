@@ -1,10 +1,11 @@
 import axios from "axios";
 
-export const apiCall = async (endpoint, method = 'GET') => {
+export const apiCall = async (endpoint, method = 'GET', payload= {}) => {
   try {
     const response = await axios({
       url: endpoint,
       method: method,
+      data : payload,
     });
 
     return response.data;

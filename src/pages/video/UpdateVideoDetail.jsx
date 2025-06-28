@@ -1,37 +1,39 @@
 import React, { useState } from 'react';
 import { Circle } from 'lucide-react';
 import axios from 'axios';
+import { useParams } from 'react-router-dom';
 
-const PublishModal = ({ onClose }) => {
+const UpdateVideoDetail = ({ onClose , video }) => {
   const [formData, setFormData] = useState({
-    title: '',
-    description: '',
-    videoFile : null,
+    title: video.title,
+    description: video.description,
     thumbnail : null,
   });
 
+  const {videoId} = useParams();
+  
   const handleChange = (e) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handlePublish = () => {
-      const upload = async () => {
+  const handleUpdate = () => {
+      const update = async () => {
         
         const formDataToSend = new FormData();
         formDataToSend.append("title", formData.title); 
         formDataToSend.append("description", formData.description);
-        formDataToSend.append("videoFile", formData.videoFile); 
-        formDataToSend.append("thumbnail", formData.thumbnail); 
+        formDataToSend.append("thumbnail", formData.thumbnail);
 
-        const uploadVideo = await axios.post('/api/videos',formDataToSend)
-        console.log(uploadVideo);
-        if (uploadVideo.status) {
+
+        const updateVideo = await axios.patch(`/api/videos/${videoId}`,formDataToSend)
+       
+        if (updateVideo.data.status) {
           setFormData({ title: '', description: '' });
           onClose();
         }
       };
 
-      upload();
+      update();
 
   };
 
@@ -46,7 +48,7 @@ const PublishModal = ({ onClose }) => {
           <Circle color="red" />
         </button>
 
-        <h2 className="text-2xl font-bold mb-4 text-gray-800">Publish Video</h2>
+        <h2 className="text-2xl font-bold mb-4 text-gray-800">Update Video</h2>
 
         <div className="space-y-4">
           <input
@@ -81,29 +83,16 @@ const PublishModal = ({ onClose }) => {
                 }))
               }
             />
-            <br />
-            <label htmlFor="video">video </label>
-            <input
-              type="file"
-              name="videoFile"
-              accept="video/*"
-              className="bg-gray-300 w-50 px-1 border-2 rounded-md cursor-pointer mt-4"
-              onChange={(e) =>
-                setFormData((prev) => ({
-                  ...prev,
-                  videoFile : e.target.files[0],
-                }))
-              }
-            />
+
           </div>
 
           <button
-            onClick={handlePublish}
+            onClick={handleUpdate}
             disabled={!formData.title.trim() || !formData.description.trim()
-                 || !formData.videoFile }
+                 || !formData.thumbnail }
             className="w-full bg-blue-600 text-white py-2 rounded-md disabled:bg-blue-400 hover:bg-blue-700 transition"
           >
-            🚀 Publish
+            🚀 Update
           </button>
         </div>
       </div>
@@ -111,4 +100,4 @@ const PublishModal = ({ onClose }) => {
   );
 };
 
-export default PublishModal;
+export default UpdateVideoDetail;

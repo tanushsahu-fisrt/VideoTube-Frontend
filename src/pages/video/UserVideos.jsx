@@ -3,6 +3,8 @@ import Header from '../../components/Header';
 import Sidebar from '../../components/Sidebar';
 import { apiCall } from '../../utils/ApiCall';
 import { useNavigate } from 'react-router-dom';
+import { Delete, Edit } from 'lucide-react';
+
 
 const UserVideos = () => {
 
@@ -36,9 +38,11 @@ const UserVideos = () => {
                 <div
                   key={video._id}
                   className="bg-white rounded-xl shadow hover:shadow-lg cursor-pointer transition"
-                  onClick={() => navigate(`/user/video/${video._id}`, { state: { video } })}
+                  onClick={() => navigate(`/user/video/${video._id}`, { state: { video : video , isIconOpen : true} })}
                 >
-                  <div className="aspect-video rounded-t-xl overflow-hidden">
+                  <div 
+                  className="aspect-video rounded-t-xl overflow-hidden"
+                  >
                     <video
                       src={video.videofile}
                       className="w-full h-full object-cover"
@@ -52,6 +56,9 @@ const UserVideos = () => {
                     <h2 className="font-semibold text-gray-800 text-lg truncate">{video.title}</h2>
                     <p className="text-sm text-gray-500 mt-1">
                       {video.views} views • {new Date(video.createdAt).toLocaleDateString()}
+                    </p>
+                    <p className="text-sm text-gray-500 mt-1 font-bold">
+                       Public : {video.ispublished ? "true" : "false"}
                     </p>
                   </div>
                 </div>
