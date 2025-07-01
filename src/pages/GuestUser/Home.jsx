@@ -11,7 +11,7 @@ const GuestHome = () => {
     useEffect( () => {
         const getVideo =  async () => {
 
-            const response = await apiCall('/api/videos/public');
+            const response = await apiCall('/api/guestUser');
             setVideo(response.data);
         }
         getVideo();

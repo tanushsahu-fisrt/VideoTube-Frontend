@@ -10,6 +10,8 @@ const Header = () => {
   const navigate = useNavigate();
   const { isLogin, userData } = useAuth();
 
+  const[userAvatar,setUserAvatar] = useState(userData?.data?.user?.avatar)
+
   const[ openPublishPopup, setOpenPublishPopup] = useState(false);
   
   return (
@@ -54,7 +56,7 @@ const Header = () => {
           className="w-6 h-6 text-gray-700 hover:text-red-500 cursor-pointer" 
           />
           <img
-            src={userData?.data?.user?.avatar}
+            src={userAvatar}
             alt="User"
             className="w-9 h-9 rounded-full object-cover cursor-pointer"
           />

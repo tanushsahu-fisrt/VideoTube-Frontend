@@ -1,7 +1,7 @@
 import { Routes , Route } from "react-router-dom";
 import LoginForm from "../pages/user/LoginForm"
 import SignupForm from "../pages/user/SignupForm"
-import GuestHome from "../pages/home/home";
+import GuestHome from "../pages/GuestUser/Home";
 import Dashboard from "../pages/LoggedInUser/LoggedInLayout";
 import VideoPage from "../pages/video/Video";
 import UserProfile from "../pages/user/UserProfile";

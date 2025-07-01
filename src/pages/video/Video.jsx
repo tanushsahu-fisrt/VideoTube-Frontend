@@ -1,9 +1,18 @@
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import Header from '../../components/Header';
-import { ThumbsUp, MessageCircle, Bell, Edit, Delete, ToggleLeft } from 'lucide-react';
+import {
+  ThumbsUp,
+  MessageCircle,
+  Bell,
+  Edit,
+  Delete,
+  Heart,
+  MoreVertical,
+} from 'lucide-react';
 import axios from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import UpdateVideoDetail from './UpdateVideoDetail';
+import CommentCard from '../../components/CommentCard';
 
 const VideoPage = () => {
   const location = useLocation();
@@ -13,7 +22,9 @@ const VideoPage = () => {
   const { videoId } = useParams();
   const navigate = useNavigate();
 
-  const[isUpdatePopUpOpen , setIsUpdatePopUpOpen] = useState(false)
+  const [isUpdatePopUpOpen, setIsUpdatePopUpOpen] = useState(false);
+  const [comment, setComment] = useState([]);
+  const [content, setContent] = useState('');
 
   const handleVideoDelete = async () => {
     const deleteVideo = await axios.delete(`/api/videos/${videoId}`);
@@ -22,20 +33,52 @@ const VideoPage = () => {
       navigate('/my-videos');
     }
   };
-   const [isOn, setIsOn] = useState(video.ispublished);
 
-   const toggleSwitch = () => {
+  const getAllComment = async () => {
+    const getComment = await axios.get(`/api/comments/${videoId}`);
+    
+    if (getComment.data.success) {
+      setComment(getComment.data.data);
+    }
+  };
+  
+  useEffect(() => {
+  getAllComment();
+  }, []);
+
+  const [isOn, setIsOn] = useState(video.ispublished);
+
+  const toggleSwitch = () => {
     setIsOn(!isOn);
     togglePublishStatus();
-  }
-  
+  };
+
   const togglePublishStatus = async () => {
-    const toggleSwitch = await axios.patch(`/api/videos/toggle/publish/${videoId}`);
-    
+    const toggleSwitch = await axios.patch(
+      `/api/videos/toggle/publish/${videoId}`
+    );
+
     if (toggleSwitch.data.success) {
       navigate('/my-videos');
     }
-  }
+  };
+
+  const handelAddComment = async () => {
+    try {
+      const addComment = await axios.post(`/api/comments/${videoId}`, {
+        content: content,
+      });
+      const newComment = addComment.data.data;
+      console.log(addComment.data.data);
+
+      if (addComment.data.success) {
+        setComment((prev) => [...prev, newComment]);
+        setContent('');
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <>
@@ -85,24 +128,24 @@ const VideoPage = () => {
           {isOpen ? (
             <div className="flex justify-between">
               <p>
-                <Edit onClick={() => setIsUpdatePopUpOpen(true) } />
+                <Edit onClick={() => setIsUpdatePopUpOpen(true)} />
               </p>
               <p>
                 <Delete onClick={handleVideoDelete} />
               </p>
               <p>
                 <div
-      className={`w-12 h-6 flex items-center px-1 rounded-full cursor-pointer transition-all duration-300 ${
-        isOn ? 'bg-blue-500' : 'bg-gray-300'
-      }`}
-      onClick={toggleSwitch}
-    >
-      <div
-        className={`w-5 h-5 rounded-full bg-white shadow-md transform transition-transform duration-300 ${
-          isOn ? 'translate-x-6' : 'translate-x-0'
-        }`}
-      ></div>
-    </div>
+                  className={`w-12 h-6 flex items-center px-1 rounded-full cursor-pointer transition-all duration-300 ${
+                    isOn ? 'bg-blue-500' : 'bg-gray-300'
+                  }`}
+                  onClick={toggleSwitch}
+                >
+                  <div
+                    className={`w-5 h-5 rounded-full bg-white shadow-md transform transition-transform duration-300 ${
+                      isOn ? 'translate-x-6' : 'translate-x-0'
+                    }`}
+                  ></div>
+                </div>
               </p>
             </div>
           ) : (
@@ -124,9 +167,53 @@ const VideoPage = () => {
             ))
           )}
         </div>
-
-        { isUpdatePopUpOpen && <UpdateVideoDetail  video ={video} onClose = {() => setIsUpdatePopUpOpen(false) } />}
       </div>
+
+      <div className="mx-10 mt-1">
+        <h1>Comments</h1>
+        <div>
+          <input
+            type="text"
+            className="w-full underline-offset-1"
+            placeholder="Add a Comment"
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+          />
+          <button
+            type="button"
+            className="bg-red-300 rounded-xl px-2 "
+            onClick={handelAddComment}
+          >
+            Add
+          </button>
+        </div>
+        <div className="flex justify-end mb-2"></div>
+        {comment.length > 0 ? (
+          <div className="flex-col gap-4 bg-white p-3 rounded-lg shadow">
+            {
+            comment.map((cmt) => 
+                <CommentCard 
+                key={cmt._id} 
+                cmt={cmt} 
+                getAllComment = {() => getAllComment()}
+                />
+            )
+            }
+          </div>
+        ) : (
+          <p>No comments</p>
+        )}
+      </div>
+
+      {isUpdatePopUpOpen && (
+        <UpdateVideoDetail
+          video={video}
+          onClose={() => setIsUpdatePopUpOpen(false)}
+          
+        />
+      )}
+
+      
     </>
   );
 };
