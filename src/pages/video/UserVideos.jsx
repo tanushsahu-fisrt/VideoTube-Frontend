@@ -31,7 +31,7 @@ const UserVideos = () => {
         <Sidebar/>
 
         {/* <div className="flex-1 px-8 py-6"> */}
-        <div className="ml-64 px-8 py-6 w-full">
+        <div className="px-8 py-6 w-full">
           <h1 className="text-3xl font-semibold mb-6 text-gray-800">Uploaded Videos</h1>
 
           {videos.length > 0 ? (

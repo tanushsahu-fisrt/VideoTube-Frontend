@@ -38,65 +38,58 @@ const UpdateVideoDetail = ({ onClose , video }) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-black/40 z-50 flex justify-center items-center">
-      <div className="bg-white w-full max-w-md rounded-xl shadow-xl p-6 relative">
-        {/* Close Button */}
-        <button
-          onClick={onClose}
-          className="absolute top-3 right-4 text-gray-500 hover:text-black text-xl"
-        >
-          <Circle color="red" />
-        </button>
+    <div className="fixed inset-0 bg-black/40 z-50 flex justify-center items-center px-4">
+  <div className="bg-white w-full max-w-lg rounded-xl shadow-2xl p-6 relative">
+    <button
+      onClick={onClose}
+      className="absolute top-3 right-4 text-gray-400 hover:text-red-600"
+    >
+      <Circle />
+    </button>
 
-        <h2 className="text-2xl font-bold mb-4 text-gray-800">Update Video</h2>
+    <h2 className="text-2xl font-bold mb-6 text-gray-900 text-center">Update Video</h2>
 
-        <div className="space-y-4">
-          <input
-            type="text"
-            name="title"
-            placeholder="Video Title"
-            value={formData.title}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
+    <div className="space-y-4">
+      <input
+        type="text"
+        name="title"
+        placeholder="Video Title"
+        value={formData.title}
+        onChange={handleChange}
+        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+      />
 
-          <textarea
-            name="description"
-            placeholder="Video Description"
-            rows={4}
-            value={formData.description}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
+      <textarea
+        name="description"
+        placeholder="Video Description"
+        rows={4}
+        value={formData.description}
+        onChange={handleChange}
+        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+      />
 
-          <div className="font-bold gap-4 py-2">
-            <label htmlFor="thumbnail">thumbnail </label>
-            <input
-              type="file"
-              name="thumbnail"
-              accept="image/*"
-              className="bg-gray-300 w-50 px-1 border-2 rounded-md cursor-pointer"
-              onChange={(e) =>
-                setFormData((prev) => ({
-                  ...prev,
-                  thumbnail : e.target.files[0],
-                }))
-              }
-            />
-
-          </div>
-
-          <button
-            onClick={handleUpdate}
-            disabled={!formData.title.trim() || !formData.description.trim()
-                 || !formData.thumbnail }
-            className="w-full bg-blue-600 text-white py-2 rounded-md disabled:bg-blue-400 hover:bg-blue-700 transition"
-          >
-            🚀 Update
-          </button>
-        </div>
+      <div className="font-medium">
+        <label htmlFor="thumbnail" className="block text-sm mb-2">Upload Thumbnail</label>
+        <input
+          type="file"
+          name="thumbnail"
+          accept="image/*"
+          className="block w-full border border-gray-300 rounded-md px-2 py-1 cursor-pointer"
+          onChange={(e) => setFormData({ ...formData, thumbnail: e.target.files[0] })}
+        />
       </div>
+
+      <button
+        onClick={handleUpdate}
+        disabled={!formData.title || !formData.description || !formData.thumbnail}
+        className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 disabled:bg-blue-300"
+      >
+        🚀 Update
+      </button>
     </div>
+  </div>
+</div>
+
   );
 };
 

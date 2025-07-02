@@ -13,7 +13,7 @@ const UserProfile = () => {
       <div className="flex min-h-screen bg-gray-50">
         <Sidebar />
 
-        <div className="ml-64 px-8 py-6 w-full">
+        <div className="px-8 py-6 w-full">
           <div className="relative bg-white rounded-xl shadow overflow-hidden">
             {/* Cover Image */}
             <div className="w-full h-56 bg-gray-200">

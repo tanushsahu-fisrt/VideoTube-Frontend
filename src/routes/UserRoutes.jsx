@@ -7,7 +7,8 @@ import VideoPage from "../pages/video/Video";
 import UserProfile from "../pages/user/UserProfile";
 import UserVideos from "../pages/video/UserVideos";
 import UserDashboard from "../pages/video/UserDashboard";
-import LikedVideos from "../components/LikedVideos";
+import LikedVideos from "../pages/user/LikedVideos";
+
 
 const UserRoutes = () => {
     

@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const CommentActions = ({ onClose, commentId, onEdit , getAllComment }) => {
+const CommentActions = ({ onClose, commentId, onEdit, getAllComment }) => {
   const handleDeleteComment = async () => {
     const check = confirm('are you sure ?');
     try {
@@ -8,10 +8,10 @@ const CommentActions = ({ onClose, commentId, onEdit , getAllComment }) => {
         if (commentId) {
           const deleteCmt = await axios.delete(`/api/comments/c/${commentId}`);
 
-          if (deleteCmt.data.success){
-              getAllComment()
-            onClose()
-        }
+          if (deleteCmt.data.success) {
+            getAllComment();
+            onClose();
+          }
         }
       } else {
         onClose();
@@ -27,19 +27,19 @@ const CommentActions = ({ onClose, commentId, onEdit , getAllComment }) => {
 
   return (
     <>
-      <div className="relative text-center">
-        <div className="absolute right-0 mt-2 w-28 bg-white border rounded shadow-md z-10">
+      <div className="transition-all duration-200 ease-out scale-100 origin-top-right">
+        <div className="w-32 bg-white border rounded-lg shadow-lg">
           <button
-            className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100"
             onClick={openUpdatemenu}
+            className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100"
           >
-            Edit
+            ✏️ Edit
           </button>
           <button
-            className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 text-red-600"
             onClick={handleDeleteComment}
+            className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50"
           >
-            Delete
+            🗑️ Delete
           </button>
         </div>
       </div>

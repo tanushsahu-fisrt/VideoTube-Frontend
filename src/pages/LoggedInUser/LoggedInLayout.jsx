@@ -19,9 +19,9 @@ const Dashboard = () => {
   return (
     <>
     <Header />
-    <div className="flex">
+    <div className="flex h-screen">
       <Sidebar />
-      <main className="ml-64 p-8 w-full min-h-screen bg-gray-100">
+      <main className="p-8 w-full ">
             <div className="flex flex-wrap gap-6">
             {   
                 video && video.map( (video, idx) => (

@@ -37,14 +37,14 @@ const VideoPage = () => {
 
   const getAllComment = async () => {
     const getComment = await axios.get(`/api/comments/${videoId}`);
-    
+
     if (getComment.data.success) {
       setComment(getComment.data.data);
     }
   };
-  
+
   useEffect(() => {
-  getAllComment();
+    getAllComment();
   }, []);
 
   const [isOn, setIsOn] = useState(video.ispublished);
@@ -82,19 +82,17 @@ const VideoPage = () => {
   };
 
   const handleVideoLike = async () => {
-    try{
-      const toggleLike = await axios.post(`/api/likes/toggle/v/${videoId}`)
-      
-      if(Object.keys(toggleLike.data.data).length === 0 )
-          setlikedVideo(false);
-      else{
+    try {
+      const toggleLike = await axios.post(`/api/likes/toggle/v/${videoId}`);
+
+      if (Object.keys(toggleLike.data.data).length === 0) setlikedVideo(false);
+      else {
         setlikedVideo(true);
       }
-    }
-    catch(err){
+    } catch (err) {
       console.log(err);
     }
-  }
+  };
 
   return (
     <>
@@ -122,17 +120,24 @@ const VideoPage = () => {
               </p>
 
               <div className="flex items-center gap-4 mt-4 flex-wrap">
-                <button 
-                className="flex items-center gap-2 px-4 py-2 bg-gray-200 rounded-full hover:bg-gray-300 transition"
-                onClick={handleVideoLike}
+                <button
+                  className={`flex items-center gap-2 px-4 py-2 rounded-full transition-all duration-200 ${likedVideo ? 'bg-red-100 text-red-600' : 'bg-gray-200 text-gray-800'} hover:bg-red-200`}
+                  onClick={handleVideoLike}
                 >
-                  <ThumbsUp className = {`w-5 h-5 overflow-hidden  ${likedVideo ? 'fill-red-500' : ''}`} /> Like
+                  <ThumbsUp
+                    className={`w-5 h-5 ${likedVideo ? 'fill-red-500' : ''}`}
+                  />
+                  Like
                 </button>
-                <button className="flex items-center gap-2 px-4 py-2 bg-gray-200 rounded-full hover:bg-gray-300 transition">
-                  <MessageCircle className="w-5 h-5" /> Comment
+
+                <button className="flex items-center gap-2 px-4 py-2 bg-gray-200 text-gray-800 rounded-full hover:bg-gray-300 transition">
+                  <MessageCircle className="w-5 h-5" />
+                  Comment
                 </button>
-                <button className="flex items-center gap-2 px-4 py-2 bg-red-500 text-white rounded-full hover:bg-red-600 transition">
-                  <Bell className="w-5 h-5" /> Subscribe
+
+                <button className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition">
+                  <Bell className="w-5 h-5" />
+                  Subscribe
                 </button>
               </div>
             </>
@@ -144,7 +149,7 @@ const VideoPage = () => {
         </div>
 
         <div className="w-full lg:w-1/3 space-y-4 overflow-y-auto max-h-[85vh]">
-          {isOpen ? (
+          {isOpen && (
             <div className="flex justify-between">
               <p>
                 <Edit onClick={() => setIsUpdatePopUpOpen(true)} />
@@ -167,73 +172,54 @@ const VideoPage = () => {
                 </div>
               </p>
             </div>
-          ) : (
-            [1, 2, 3, 4, 5].map((num) => (
-              <div
-                key={num}
-                className="flex gap-4 bg-white p-3 rounded-lg shadow"
-              >
-                <div className="w-32 h-20 bg-gray-300 rounded"></div>
-                <div className="flex flex-col justify-between">
-                  <h3 className="font-medium text-gray-800">
-                    Sample Video Title {num}
-                  </h3>
-                  <p className="text-xs text-gray-500">
-                    1.2M views • 1 day ago
-                  </p>
-                </div>
-              </div>
-            ))
-          )}
+          ) }
         </div>
       </div>
 
-      <div className="mx-10 mt-1">
-        <h1>Comments</h1>
-        <div>
-          <input
-            type="text"
-            className="w-full underline-offset-1"
-            placeholder="Add a Comment"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-          />
-          <button
-            type="button"
-            className="bg-red-300 rounded-xl px-2 "
-            onClick={handelAddComment}
-          >
-            Add
-          </button>
-        </div>
+      <div className="mx-10 mt-4">
+  <h2 className="text-xl font-semibold text-gray-800 mb-4">Comments</h2>
 
-        <div className="flex justify-end mb-2"></div>
-        {comment.length > 0 ? (
-          <div className="flex-col gap-4 bg-white p-3 rounded-lg shadow">
-            {
-            comment.map((cmt) => 
-                <CommentCard 
-                key={cmt._id} 
-                cmt={cmt} 
-                getAllComment = {() => getAllComment()}
-                />
-            )
-            }
-          </div>
-        ) : (
-          <p>No comments</p>
-        )}
-      </div>
+  {/* Add Comment Input */}
+  <div className="flex items-center gap-2 mb-6">
+    <input
+      type="text"
+      className="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+      placeholder="Add a comment..."
+      value={content}
+      onChange={(e) => setContent(e.target.value)}
+    />
+    <button
+      type="button"
+      className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition"
+      onClick={handelAddComment}
+      disabled={!content.trim()}
+    >
+      Add
+    </button>
+  </div>
+
+  {/* Comment List */}
+  {comment.length > 0 ? (
+    <div className="flex flex-col gap-4 bg-white p-4 rounded-lg shadow-sm">
+      {comment.map((cmt) => (
+        <CommentCard
+          key={cmt._id}
+          cmt={cmt}
+          getAllComment={getAllComment}
+        />
+      ))}
+    </div>
+  ) : (
+    <p className="text-gray-500">No comments yet.</p>
+  )}
+</div>
 
       {isUpdatePopUpOpen && (
         <UpdateVideoDetail
           video={video}
           onClose={() => setIsUpdatePopUpOpen(false)}
-          
         />
       )}
-
-      
     </>
   );
 };
