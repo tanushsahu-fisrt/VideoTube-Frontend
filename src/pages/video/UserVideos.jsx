@@ -3,7 +3,7 @@ import Header from '../../components/Header';
 import Sidebar from '../../components/Sidebar';
 import { apiCall } from '../../utils/ApiCall';
 import { useNavigate } from 'react-router-dom';
-import { Delete, Edit } from 'lucide-react';
+
 
 
 const UserVideos = () => {
@@ -13,15 +13,17 @@ const UserVideos = () => {
 
     useEffect( () => {
         const getAllVideo = async () => {
-            const getVideos = await apiCall('/api/videos')
+            const getVideos = await apiCall('/api/like/videos','GET')
 
-            if(getVideos.success){
+            if(getVideos.data.success){
                 setVideo(getVideos.data);
             }
         }
         getAllVideo();
     },[])
 
+
+    console.log('hii')
   return (
     <>
       <Header />
@@ -30,7 +32,7 @@ const UserVideos = () => {
 
         {/* <div className="flex-1 px-8 py-6"> */}
         <div className="ml-64 px-8 py-6 w-full">
-          <h1 className="text-3xl font-semibold mb-6 text-gray-800">Your Uploaded Videos</h1>
+          <h1 className="text-3xl font-semibold mb-6 text-gray-800">Uploaded Videos</h1>
 
           {videos.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">

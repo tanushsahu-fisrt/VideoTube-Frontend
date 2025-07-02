@@ -7,6 +7,7 @@ import VideoPage from "../pages/video/Video";
 import UserProfile from "../pages/user/UserProfile";
 import UserVideos from "../pages/video/UserVideos";
 import UserDashboard from "../pages/video/UserDashboard";
+import LikedVideos from "../components/LikedVideos";
 
 const UserRoutes = () => {
     
@@ -20,6 +21,7 @@ const UserRoutes = () => {
             <Route path="/profile" element={<UserProfile />} />
             <Route path="/my-videos" element={<UserVideos />} />
             <Route path="/dashboard" element={<UserDashboard />} />
+            <Route path="/liked-video" element={<LikedVideos />} />
         </Routes>
     )
 

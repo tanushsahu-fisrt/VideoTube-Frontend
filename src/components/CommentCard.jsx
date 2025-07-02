@@ -7,6 +7,8 @@ const CommentCard = ({ cmt , getAllComment }) => {
   const [option, setOption] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [newContent, setNewContent] = useState(cmt.content);
+  const [likeComment, setLikeComment] = useState(false);
+
   const inputRef = useRef(null);
 
   // Auto-focus when entering edit mode
@@ -34,14 +36,33 @@ const CommentCard = ({ cmt , getAllComment }) => {
     setOption(false);
     setNewContent(cmt.content);
   };
+
+  const {_id} = cmt; 
+ 
+  const handleCommentLike = async () => {
+    try{
+      const toggleCommentLike = await axios.post(`/api/likes/toggle/c/${_id}`)
+      
+      if(Object.keys(toggleCommentLike.data.data).length === 0 )
+          setLikeComment(false);
+      else{
+        setLikeComment(true);
+      }
+    }
+    catch(err){
+      console.log(err);
+    }
+  }
   return (
     <>
       <div key={cmt._id} className="flex gap-4 bg-white p-3 rounded-lg shadow">
         <div className="flex flex-col justify-between">
           <h3 className="font-medium text-gray-800">
             <div className="flex gap-7 justify-between">
-              <button className="text-red-500 hover:text-red-600">
-                <Heart size={18} />
+              <button 
+              className="text-red-500 bg-white hover:text-red-600"
+              onClick={handleCommentLike}>
+                <Heart size={18} className={`overflow-hidden ${likeComment ? 'fill-red-500' : ''}`}/>
               </button>
               {isEdit ? (
                 <div className="mt-2">

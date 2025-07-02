@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Home, Video, User } from 'lucide-react'; // icons (optional)
+import { Home, Video, User, ThumbsUp, LayoutDashboard } from 'lucide-react'; // icons (optional)
 
 const Sidebar = () => {
   return (
@@ -9,8 +9,8 @@ const Sidebar = () => {
         <Link to="/user" className="block hover:text-blue-400"><Home size={20} className="inline mr-2"/> Home</Link>
         <Link to="/my-videos" className="block hover:text-blue-400"><Video size={20} className="inline mr-2"/> My Videos</Link>
         <Link to="/profile" className="block hover:text-blue-400"><User size={20} className="inline mr-2"/> Profile</Link>
-        <Link to="/dashboard" className="block hover:text-blue-400"><User size={20} className="inline mr-2"/>Dashboard</Link>
-        {/* Add more links as needed */}
+        <Link to="/dashboard" className="block hover:text-blue-400"><LayoutDashboard size={20} className="inline mr-2"/>Dashboard</Link>
+        <Link to="/liked-video" className="block hover:text-blue-400"><ThumbsUp size={20} className="inline mr-2"/>Liked Videos</Link>
       </nav>
     </aside>
   );

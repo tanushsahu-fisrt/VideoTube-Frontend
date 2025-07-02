@@ -25,6 +25,7 @@ const VideoPage = () => {
   const [isUpdatePopUpOpen, setIsUpdatePopUpOpen] = useState(false);
   const [comment, setComment] = useState([]);
   const [content, setContent] = useState('');
+  const [likedVideo, setlikedVideo] = useState(false);
 
   const handleVideoDelete = async () => {
     const deleteVideo = await axios.delete(`/api/videos/${videoId}`);
@@ -80,6 +81,21 @@ const VideoPage = () => {
     }
   };
 
+  const handleVideoLike = async () => {
+    try{
+      const toggleLike = await axios.post(`/api/likes/toggle/v/${videoId}`)
+      
+      if(Object.keys(toggleLike.data.data).length === 0 )
+          setlikedVideo(false);
+      else{
+        setlikedVideo(true);
+      }
+    }
+    catch(err){
+      console.log(err);
+    }
+  }
+
   return (
     <>
       <Header />
@@ -106,8 +122,11 @@ const VideoPage = () => {
               </p>
 
               <div className="flex items-center gap-4 mt-4 flex-wrap">
-                <button className="flex items-center gap-2 px-4 py-2 bg-gray-200 rounded-full hover:bg-gray-300 transition">
-                  <ThumbsUp className="w-5 h-5" /> Like
+                <button 
+                className="flex items-center gap-2 px-4 py-2 bg-gray-200 rounded-full hover:bg-gray-300 transition"
+                onClick={handleVideoLike}
+                >
+                  <ThumbsUp className = {`w-5 h-5 overflow-hidden  ${likedVideo ? 'fill-red-500' : ''}`} /> Like
                 </button>
                 <button className="flex items-center gap-2 px-4 py-2 bg-gray-200 rounded-full hover:bg-gray-300 transition">
                   <MessageCircle className="w-5 h-5" /> Comment
@@ -187,6 +206,7 @@ const VideoPage = () => {
             Add
           </button>
         </div>
+
         <div className="flex justify-end mb-2"></div>
         {comment.length > 0 ? (
           <div className="flex-col gap-4 bg-white p-3 rounded-lg shadow">
