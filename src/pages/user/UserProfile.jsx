@@ -10,7 +10,7 @@ const UserProfile = () => {
   return (
     <>
       <Header />
-      <div className="flex min-h-screen bg-gray-50">
+      <div className="flex min-h-157 bg-gray-50">
         <Sidebar />
 
         <div className="px-8 py-6 w-full">

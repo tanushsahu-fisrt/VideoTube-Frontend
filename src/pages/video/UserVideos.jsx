@@ -13,56 +13,54 @@ const UserVideos = () => {
 
     useEffect( () => {
         const getAllVideo = async () => {
-            const getVideos = await apiCall('/api/like/videos','GET')
+            const getVideos = await apiCall('/api/videos','GET')
 
-            if(getVideos.data.success){
+            if(getVideos.success){
                 setVideo(getVideos.data);
             }
         }
         getAllVideo();
     },[])
 
-
-    console.log('hii')
+    const {username} = JSON.parse(sessionStorage.getItem("user")); 
+  
   return (
     <>
       <Header />
-      <div className="flex min-h-screen bg-gray-50">
+      <div className="flex min-h-157 bg-gray-50">
         <Sidebar/>
 
         {/* <div className="flex-1 px-8 py-6"> */}
         <div className="px-8 py-6 w-full">
-          <h1 className="text-3xl font-semibold mb-6 text-gray-800">Uploaded Videos</h1>
+          <h1 className="text-3xl font-semibold mb-6 text-gray-800">{username} Video's</h1>
 
           {videos.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-6">
               {videos.map((video) => (
                 <div
                   key={video._id}
-                  className="bg-white rounded-xl shadow hover:shadow-lg cursor-pointer transition"
+                  className="bg-white rounded-xl shadow hover:shadow-lg cursor-pointer transition "
                   onClick={() => navigate(`/user/video/${video._id}`, { state: { video : video , isIconOpen : true} })}
                 >
-                  <div 
-                  className="aspect-video rounded-t-xl overflow-hidden"
-                  >
-                    <video
-                      src={video.videofile}
-                      className="w-full h-full object-cover"
-                      muted
-                      preload="metadata"
-                      onMouseOver={(e) => e.target.play()}
-                      onMouseOut={(e) => e.target.pause()}
-                    />
-                  </div>
-                  <div className="p-4">
-                    <h2 className="font-semibold text-gray-800 text-lg truncate">{video.title}</h2>
-                    <p className="text-sm text-gray-500 mt-1">
-                      {video.views} views • {new Date(video.createdAt).toLocaleDateString()}
+                  <img
+                  src={video?.thumbnail}
+                  alt={video?.title}
+                  className="w-full h-40 object-cover rounded-md"
+                  />
+                  <div className="p-3">
+                    <h3 className="text-sm font-semibold mb-1 truncate">
+                      {video?.title}
+                    </h3>
+                    <p className="text-xs text-gray-600 line-clamp-2">
+                      {video?.description}
                     </p>
-                    <p className="text-sm text-gray-500 mt-1 font-bold">
+                    <p className="text-xs text-gray-500 mt-1">
+                      {Math.round(video?.duration)} sec • {video?.views} views
+                    </p>
+                  </div>
+                    <p className="text-sm text-gray-500 mt-1 font-bold p-1">
                        Public : {video.ispublished ? "true" : "false"}
                     </p>
-                  </div>
                 </div>
               ))}
             </div>

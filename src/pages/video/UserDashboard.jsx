@@ -6,7 +6,10 @@ const UserDashboard = () => {
     return(
         <>
         <Header/>
+        <div className="flex min-h-157 bg-gray-50">
         <Sidebar />
+        </div>
+
         </>
     )
 }

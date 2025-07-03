@@ -19,7 +19,7 @@ const Dashboard = () => {
   return (
     <>
     <Header />
-    <div className="flex h-screen">
+    <div className=" flex min-h-157">
       <Sidebar />
       <main className="p-8 w-full ">
             <div className="flex flex-wrap gap-6">
