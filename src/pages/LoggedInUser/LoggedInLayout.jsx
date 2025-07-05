@@ -19,16 +19,18 @@ const Dashboard = () => {
   return (
     <>
     <Header />
-    <div className=" flex min-h-157">
+    <div className="flex min-h-157">
       <Sidebar />
-      <main className="p-8 w-full ">
-            <div className="flex flex-wrap gap-6">
-            {   
-                video && video.map( (video, idx) => (
-                    <VideoCard key={idx} video={video} />
-                ))
-            }
-            </div>
+      <main className="p-3 w-full">
+        <div
+        className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-4 
+        max-h-[600px] overflow-y-scroll overflow-x-hidden 
+        scroll-smooth hide-scrollbar">
+        {video &&
+        video.map((video, idx) => 
+        <VideoCard key={idx} video={video} />)
+        }
+        </div>
       </main>
     </div>
     </>

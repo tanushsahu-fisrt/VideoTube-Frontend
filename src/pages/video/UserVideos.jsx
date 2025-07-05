@@ -27,15 +27,16 @@ const UserVideos = () => {
   return (
     <>
       <Header />
-      <div className="flex min-h-157 bg-gray-50">
-        <Sidebar/>
-
-        {/* <div className="flex-1 px-8 py-6"> */}
-        <div className="px-8 py-6 w-full">
-          <h1 className="text-3xl font-semibold mb-6 text-gray-800">{username} Video's</h1>
+      <div className=" flex min-h-140">
+        <Sidebar />
+          
+        <main className="p-3 w-full">
+          <h1 className="text-3xl font-semibold mb-6 text-gray-800">{username} Video's</h1> 
 
           {videos.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-4 
+            max-h-[600px] overflow-y-scroll overflow-x-hidden 
+            scroll-smooth hide-scrollbar">
               {videos.map((video) => (
                 <div
                   key={video._id}
@@ -67,7 +68,8 @@ const UserVideos = () => {
           ) : (
             <p className="text-center text-lg text-gray-600 mt-10">No videos uploaded yet.</p>
           )}
-        </div>
+        </main>
+
       </div>
     </>
   );

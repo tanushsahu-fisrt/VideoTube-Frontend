@@ -51,7 +51,7 @@ const LikedVideos = () => {
                 <h3 className="font-semibold text-gray-900 truncate">{obj?.video?.title}</h3>
                 <p className="text-sm text-gray-500 mt-1 truncate">{obj?.video?.description}</p>
                 <p className="text-xs text-gray-400 mt-2">
-                  {obj?.video.views} views •{" "}
+                  {obj?.video?.views} views •{" "}
                   {new Date(obj?.video?.createdAt).toLocaleDateString()}
                 </p>
               </div>

@@ -11,7 +11,7 @@ const VideoCard = ({ video }) => {
   }
 
   return (
-    <div className="w-full sm:w-64 bg-white rounded-lg overflow-hidden shadow-md">
+    <div className="w-full sm:w-70 bg-white rounded-lg overflow-hidden shadow-md">
       {isLogin ? (
         <div onClick={() => handleVideoClick(video?._id)}>
           <img

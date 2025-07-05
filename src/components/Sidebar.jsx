@@ -1,4 +1,4 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   Home,
   Video,
@@ -7,10 +7,12 @@ import {
   LayoutDashboard,
   LogOut,
 } from 'lucide-react';
+import { apiCall } from '../utils/ApiCall';
+
 
 const Sidebar = () => {
   const location = useLocation();
-
+  const navigate = useNavigate();
   const menuItems = [
     { to: '/user', label: 'Home', icon: <Home size={20} /> },
     { to: '/my-videos', label: 'My Videos', icon: <Video size={20} /> },
@@ -22,6 +24,18 @@ const Sidebar = () => {
     },
     { to: '/liked-video', label: 'Liked Videos', icon: <ThumbsUp size={20} /> },
   ];
+
+  const handleLogOut = async () => {
+
+    const logOut = await apiCall(`/api/users/logout`,"POST");
+
+    if(logOut.success){
+      sessionStorage.removeItem('user')
+      sessionStorage.removeItem('accessToken')
+      navigate('/')
+    }
+
+  }
 
   return (
     <>
@@ -51,7 +65,9 @@ const Sidebar = () => {
 
         {/* Bottom Logout */}
         <div>
-          <button className="flex items-center gap-3 px-4 py-2 rounded-lg text-white hover:text-red-300 transition">
+          <button 
+          className="flex items-center gap-3 px-4 py-2 rounded-lg text-white hover:text-red-300 transition"
+          onClick={handleLogOut}>
             <LogOut />
             <span className="text-sm font-medium">Log Out</span>
           </button>

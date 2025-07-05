@@ -22,7 +22,7 @@ const GuestHome = () => {
       <Header />
       <main className="p-6">
         <h2 className="text-2xl font-bold mb-6">Explore Trending Videos</h2>
-        <div className="flex flex-wrap gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-5 gap-4">
           {
            video && video.map( (video, idx) => (
             <VideoCard key={idx} video={video} />
