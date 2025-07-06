@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import Header from '../../components/Header';
+import { Sparkles } from 'lucide-react';
+import { apiCall } from "../../utils/ApiCall"
+import { useNavigate } from 'react-router-dom';
 
 const SignupForm = () => {
   const [formData, setFormData] = useState({
@@ -19,108 +22,106 @@ const SignupForm = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const navigate = useNavigate();
+  const handleSubmit =  async (e) => {
     e.preventDefault();
-
     const payload = new FormData();
     for (const key in formData) {
       payload.append(key, formData[key]);
     }
 
-    console.log('Form submitted');
-    // Example: send to backend
-    // fetch('/api/signup', {
-    //   method: 'POST',
-    //   body: payload,
-    // });
+    const response  = await apiCall(`/api/users/register`,'POST',payload)
+
+    if(response?.success)
+      navigate('/user/login')
   };
 
   return (
     <>
-  
-    <Header />
-    <div className="overflow-hidden bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 flex items-center justify-center">
+      <Header />
+      <div className="min-h-screen bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 flex items-center justify-center px-4">
+        
+        <div className="bg-white text-center p-8 rounded-3xl shadow-2xl w-full max-w-md">
+          <div className="inline-flex gap-1 items-center justify-center w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl mb-4 shadow-lg">
+              <Sparkles className="w-8 h-8 text-white" />
+              <span className="text-white text-lg font-bold">VT</span>
+          </div>
 
-      <div className="bg-white p-6 rounded-2xl shadow-xl w-full max-w-lg">
-        <h2 className="text-2xl font-bold mb-6 text-gray-800 text-center">Create Your Account</h2>
-        <form onSubmit={handleSubmit} className="space-y-4" encType="multipart/form-data">
-          <div>
-            <label className="block text-sm font-medium">Username</label>
+          <h2 className="text-2xl font-bold text-center text-gray-800 mb-2">Create Your Account</h2>
+          <p className="text-center text-gray-500 mb-6 text-sm">Join us on your video journey</p>
+
+          <form onSubmit={handleSubmit} className="space-y-4" encType="multipart/form-data">
             <input
               type="text"
               name="username"
+              placeholder="Username"
               value={formData.username}
               onChange={handleChange}
-              className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-400"
               required
             />
-          </div>
-          <div>
-            <label className="block text-sm font-medium">Email</label>
             <input
               type="email"
               name="email"
+              placeholder="Email"
               value={formData.email}
               onChange={handleChange}
-              className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-400"
               required
             />
-          </div>
-          <div>
-            <label className="block text-sm font-medium">Full Name</label>
             <input
               type="text"
               name="fullName"
+              placeholder="Full Name"
               value={formData.fullName}
               onChange={handleChange}
-              className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-400"
               required
             />
-          </div>
-          <div>
-            <label className="block text-sm font-medium">Avatar</label>
+            <div className='flex gap-2'>
+            <label htmlFor="avatar" className='ml-2'>avatar</label>
             <input
               type="file"
               name="avatar"
               accept="image/*"
               onChange={handleChange}
-              className="mt-1 w-full"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium">Cover Image</label>
+              className="w-full text-sm text-gray-600"
+              />
+            </div>
+            <div className='flex gap-2'>
+            <label htmlFor="coverImage" className='text-md'>cover image : </label>
             <input
               type="file"
               name="coverImage"
               accept="image/*"
               onChange={handleChange}
-              className="mt-1 w-full"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium">Password</label>
+              className="w-full text-sm text-gray-600"
+              />
+            </div>
             <input
               type="password"
               name="password"
+              placeholder="Password"
               value={formData.password}
               onChange={handleChange}
-              className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-400"
               required
             />
-          </div>
-          <button
-            type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded-xl hover:bg-blue-700 transition-all"
-          >
-            Sign Up
-          </button>
-        </form>
-        <p className="text-center text-sm text-gray-600 mt-4">
-          Already have an account? <a href="/user/login" className="text-blue-600 hover:underline">Login</a>
-        </p>
+
+            <button
+              type="submit"
+              className="w-full bg-purple-600 text-white py-2 rounded-xl hover:bg-purple-700 transition-all"
+            >
+              Sign Up
+            </button>
+          </form>
+
+          <p className="text-center text-sm text-gray-600 mt-4">
+            Already have an account?{' '}
+            <a href="/user/login" className="text-purple-600 hover:underline">Login</a>
+          </p>
+        </div>
       </div>
-    </div>
-      
     </>
   );
 };
