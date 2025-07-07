@@ -8,6 +8,7 @@ import UserProfile from "../pages/user/UserProfile";
 import UserVideos from "../pages/video/UserVideos";
 import UserDashboard from "../pages/video/UserDashboard";
 import LikedVideos from "../pages/user/LikedVideos";
+import UserSubscribed from "../pages/user/UserSubscribed";
 
 
 const UserRoutes = () => {
@@ -18,11 +19,12 @@ const UserRoutes = () => {
             <Route path="/user/login" element={<LoginForm />} />
             <Route path="/user/signup" element={<SignupForm />} />
             <Route path="/user" element={<Dashboard />} />
-            <Route path="/user/video/:videoId" element={<VideoPage />} />
+            <Route path="/user/video/:channelId" element={<VideoPage />} />
             <Route path="/profile" element={<UserProfile />} />
             <Route path="/my-videos" element={<UserVideos />} />
             <Route path="/dashboard" element={<UserDashboard />} />
-            <Route path="/liked-video" element={<LikedVideos />} />
+            <Route path="/user/liked-video" element={<LikedVideos />} />
+            <Route path="/user/subscribed-list" element={<UserSubscribed />} />
         </Routes>
     )
 

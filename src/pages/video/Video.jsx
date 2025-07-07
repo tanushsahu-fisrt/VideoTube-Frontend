@@ -6,13 +6,12 @@ import {
   Bell,
   Edit,
   Delete,
-  Heart,
-  MoreVertical,
+  Sparkles,
 } from 'lucide-react';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import UpdateVideoDetail from './UpdateVideoDetail';
-import CommentCard from '../../components/CommentCard';
+import CommentCard from '../../components/comment/CommentCard';
 
 const VideoPage = () => {
   const location = useLocation();
@@ -26,6 +25,7 @@ const VideoPage = () => {
   const [comment, setComment] = useState([]);
   const [content, setContent] = useState('');
   const [likedVideo, setlikedVideo] = useState(false);
+  const [subscribedVideo, setSubscribedVideo] = useState(false);
 
   const handleVideoDelete = async () => {
     const deleteVideo = await axios.delete(`/api/videos/${videoId}`);
@@ -94,6 +94,23 @@ const VideoPage = () => {
     }
   };
 
+  const {channelId} = useParams();
+  const handleSubscribtion = async () => {
+
+    try{
+      const response =  await axios.post(`/api/subscriptions/c/${channelId}`)
+      const data = response.data.data;
+      if(Object.keys(data).length > 0){
+        setSubscribedVideo(true);
+      }
+      else{
+        setSubscribedVideo(false);
+      }
+    }
+    catch(err){
+      console.log(err)
+    }
+  }
   return (
     <>
       <Header />
@@ -119,9 +136,9 @@ const VideoPage = () => {
                 {new Date(video.createdAt).toLocaleDateString()}
               </p>
 
-              <div className="flex items-center gap-4 mt-4 flex-wrap">
+              <div className="flex items-center gap-4 mt-4 flex-wrap ">
                 <button
-                  className={`flex items-center gap-2 px-4 py-2 rounded-full transition-all duration-200 ${likedVideo ? 'bg-red-100 text-red-600' : 'bg-gray-200 text-gray-800'} hover:bg-red-200`}
+                  className={`flex cursor-pointer items-center gap-2 px-4 py-2 rounded-full transition-all duration-200 ${likedVideo ? 'bg-red-100 text-red-600' : 'bg-gray-200 text-gray-800'} hover:bg-red-200`}
                   onClick={handleVideoLike}
                 >
                   <ThumbsUp
@@ -130,14 +147,24 @@ const VideoPage = () => {
                   Like
                 </button>
 
-                <button className="flex items-center gap-2 px-4 py-2 bg-gray-200 text-gray-800 rounded-full hover:bg-gray-300 transition">
+                <button className="flex cursor-pointer items-center gap-2 px-4 py-2 bg-gray-200 text-gray-800 rounded-full hover:bg-gray-300 transition">
                   <MessageCircle className="w-5 h-5" />
                   Comment
                 </button>
 
-                <button className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition">
+                <button 
+                className={`flex items-center cursor-pointer gap-2 px-4 py-2 ${subscribedVideo ? 'bg-red-500' : 'bg-blue-600'} text-white rounded-full`}
+                onClick={handleSubscribtion}
+                >
+                  {
+                  subscribedVideo ?  
+                  (<p className='flex gap-2'> 
+                  <Sparkles className="w-5 h-5" />
+                    Subscribed </p>) : 
+                  (<p className='flex gap-2'>
                   <Bell className="w-5 h-5" />
-                  Subscribe
+                     Subscribe </p>)
+                  }
                 </button>
               </div>
             </>

@@ -6,6 +6,7 @@ import {
   ThumbsUp,
   LayoutDashboard,
   LogOut,
+  Sparkles,
 } from 'lucide-react';
 import { apiCall } from '../utils/ApiCall';
 
@@ -22,7 +23,8 @@ const Sidebar = () => {
       label: 'Dashboard',
       icon: <LayoutDashboard size={20} />,
     },
-    { to: '/liked-video', label: 'Liked Videos', icon: <ThumbsUp size={20} /> },
+    { to: '/user/liked-video', label: 'Liked Videos', icon: <ThumbsUp size={20} /> },
+    { to: '/user/subscribed-list', label: 'subscriberd channel', icon: <Sparkles size={20} /> },
   ];
 
   const handleLogOut = async () => {
