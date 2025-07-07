@@ -19,7 +19,7 @@ const UserRoutes = () => {
             <Route path="/user/login" element={<LoginForm />} />
             <Route path="/user/signup" element={<SignupForm />} />
             <Route path="/user" element={<Dashboard />} />
-            <Route path="/user/video/:channelId" element={<VideoPage />} />
+            <Route path="/user/video/:videoId" element={<VideoPage />} />
             <Route path="/profile" element={<UserProfile />} />
             <Route path="/my-videos" element={<UserVideos />} />
             <Route path="/dashboard" element={<UserDashboard />} />

@@ -24,7 +24,7 @@ const Sidebar = () => {
       icon: <LayoutDashboard size={20} />,
     },
     { to: '/user/liked-video', label: 'Liked Videos', icon: <ThumbsUp size={20} /> },
-    { to: '/user/subscribed-list', label: 'subscriberd channel', icon: <Sparkles size={20} /> },
+    { to: '/user/subscribed-list', label: 'subscribers', icon: <Sparkles size={20} /> },
   ];
 
   const handleLogOut = async () => {

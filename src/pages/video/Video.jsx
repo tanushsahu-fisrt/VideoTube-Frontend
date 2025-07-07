@@ -94,12 +94,15 @@ const VideoPage = () => {
     }
   };
 
-  const {channelId} = useParams();
+  
   const handleSubscribtion = async () => {
-
     try{
+      const channelId  = video?.owner
+      
       const response =  await axios.post(`/api/subscriptions/c/${channelId}`)
+      
       const data = response.data.data;
+      
       if(Object.keys(data).length > 0){
         setSubscribedVideo(true);
       }

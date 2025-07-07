@@ -23,10 +23,6 @@ const LikedVideos = () => {
     getAllLikedVideos();
   }, []);
 
-
-  console.log(likedVideos)
-
-
   return (
     <>
     <Header />
