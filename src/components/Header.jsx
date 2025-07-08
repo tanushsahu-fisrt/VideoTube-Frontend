@@ -23,7 +23,7 @@ const Header = () => {
   return (
     <>
       <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-xl border-b border-gray-200/60 shadow-sm">
-        <div className="flex items-center justify-between px-4 lg:px-8 py-3">
+        <div className="flex items-center justify-between px-4 lg:px-8 py-1">
           {/* Logo Section */}
           <div 
             className="flex items-center cursor-pointer hover:opacity-80 transition-opacity"

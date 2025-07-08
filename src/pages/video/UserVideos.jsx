@@ -27,7 +27,7 @@ const UserVideos = () => {
   return (
     <>
       <Header />
-      <div className=" flex min-h-140">
+      <div className=" flex min-h-157">
         <Sidebar />
           
         <main className="p-3 w-full">

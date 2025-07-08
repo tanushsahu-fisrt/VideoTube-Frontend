@@ -24,30 +24,23 @@ const VideoPage = () => {
   const [isUpdatePopUpOpen, setIsUpdatePopUpOpen] = useState(false);
   const [comment, setComment] = useState([]);
   const [content, setContent] = useState('');
-  const [likedVideo, setlikedVideo] = useState(false);
+  const [likedVideo, setLikedVideo] = useState(false);
   const [subscribedVideo, setSubscribedVideo] = useState(false);
+  const [isOn, setIsOn] = useState(video?.ispublished);
 
   const handleVideoDelete = async () => {
-    const deleteVideo = await axios.delete(`/api/videos/${videoId}`);
-
-    if (deleteVideo.data.success) {
-      navigate('/my-videos');
-    }
+    const res = await axios.delete(`/api/videos/${videoId}`);
+    if (res.data.success) navigate('/my-videos');
   };
 
   const getAllComment = async () => {
-    const getComment = await axios.get(`/api/comments/${videoId}`);
-
-    if (getComment.data.success) {
-      setComment(getComment.data.data);
-    }
+    const res = await axios.get(`/api/comments/${videoId}`);
+    if (res.data.success) setComment(res.data.data);
   };
 
   useEffect(() => {
     getAllComment();
   }, []);
-
-  const [isOn, setIsOn] = useState(video.ispublished);
 
   const toggleSwitch = () => {
     setIsOn(!isOn);
@@ -55,25 +48,17 @@ const VideoPage = () => {
   };
 
   const togglePublishStatus = async () => {
-    const toggleSwitch = await axios.patch(
-      `/api/videos/toggle/publish/${videoId}`
-    );
-
-    if (toggleSwitch.data.success) {
-      navigate('/my-videos');
-    }
+    const res = await axios.patch(`/api/videos/toggle/publish/${videoId}`);
+    if (res.data.success) navigate('/my-videos');
   };
 
   const handelAddComment = async () => {
     try {
-      const addComment = await axios.post(`/api/comments/${videoId}`, {
-        content: content,
+      const res = await axios.post(`/api/comments/${videoId}`, {
+        content,
       });
-      const newComment = addComment.data.data;
-      console.log(addComment.data.data);
-
-      if (addComment.data.success) {
-        setComment((prev) => [...prev, newComment]);
+      if (res.data.success) {
+        setComment((prev) => [...prev, res.data.data]);
         setContent('');
       }
     } catch (err) {
@@ -83,46 +68,32 @@ const VideoPage = () => {
 
   const handleVideoLike = async () => {
     try {
-      const toggleLike = await axios.post(`/api/likes/toggle/v/${videoId}`);
-
-      if (Object.keys(toggleLike.data.data).length === 0) setlikedVideo(false);
-      else {
-        setlikedVideo(true);
-      }
+      const res = await axios.post(`/api/likes/toggle/v/${videoId}`);
+      setLikedVideo(Object.keys(res.data.data).length > 0);
     } catch (err) {
       console.log(err);
     }
   };
 
-  
   const handleSubscribtion = async () => {
-    try{
-      const channelId  = video?.owner
-      
-      const response =  await axios.post(`/api/subscriptions/c/${channelId}`)
-      
-      const data = response.data.data;
-      
-      if(Object.keys(data).length > 0){
-        setSubscribedVideo(true);
-      }
-      else{
-        setSubscribedVideo(false);
-      }
+    try {
+      const channelId = video?.owner;
+      const res = await axios.post(`/api/subscriptions/c/${channelId}`);
+      setSubscribedVideo(Object.keys(res.data.data).length > 0);
+    } catch (err) {
+      console.log(err);
     }
-    catch(err){
-      console.log(err)
-    }
-  }
+  };
+
   return (
     <>
       <Header />
       <div className="flex flex-col lg:flex-row gap-6 px-6 py-6 bg-gray-100 min-h-screen">
-        {/* Left: Video Player & Details */}
+        {/* Left Section: Video Player */}
         <div className="w-full lg:w-2/3">
           {video ? (
             <>
-              <div className="aspect-video w-full rounded-xl overflow-hidden shadow-lg bg-black">
+              <div className="aspect-video rounded-xl overflow-hidden shadow-lg bg-black">
                 <video
                   src={video.videofile}
                   controls
@@ -131,7 +102,7 @@ const VideoPage = () => {
                 />
               </div>
 
-              <h1 className="mt-4 text-2xl font-semibold text-gray-800">
+              <h1 className="mt-5 text-2xl font-bold text-gray-800">
                 {video.title}
               </h1>
               <p className="text-sm text-gray-600 mt-1">
@@ -139,9 +110,14 @@ const VideoPage = () => {
                 {new Date(video.createdAt).toLocaleDateString()}
               </p>
 
-              <div className="flex items-center gap-4 mt-4 flex-wrap ">
+              {/* Action Buttons */}
+              <div className="flex flex-wrap gap-3 mt-4">
                 <button
-                  className={`flex cursor-pointer items-center gap-2 px-4 py-2 rounded-full transition-all duration-200 ${likedVideo ? 'bg-red-100 text-red-600' : 'bg-gray-200 text-gray-800'} hover:bg-red-200`}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+                    likedVideo
+                      ? 'bg-red-100 text-red-600 hover:bg-red-200'
+                      : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
+                  }`}
                   onClick={handleVideoLike}
                 >
                   <ThumbsUp
@@ -150,100 +126,111 @@ const VideoPage = () => {
                   Like
                 </button>
 
-                <button className="flex cursor-pointer items-center gap-2 px-4 py-2 bg-gray-200 text-gray-800 rounded-full hover:bg-gray-300 transition">
+                <button className="flex items-center gap-2 px-4 py-2 bg-gray-200 text-gray-800 rounded-full text-sm font-medium hover:bg-gray-300 transition">
                   <MessageCircle className="w-5 h-5" />
                   Comment
                 </button>
 
-                <button 
-                className={`flex items-center cursor-pointer gap-2 px-4 py-2 ${subscribedVideo ? 'bg-red-500' : 'bg-blue-600'} text-white rounded-full`}
-                onClick={handleSubscribtion}
+                <button
+                  className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition ${
+                    subscribedVideo
+                      ? 'bg-red-500 text-white hover:bg-red-600'
+                      : 'bg-blue-600 text-white hover:bg-blue-700'
+                  }`}
+                  onClick={handleSubscribtion}
                 >
-                  {
-                  subscribedVideo ?  
-                  (<p className='flex gap-2'> 
-                  <Sparkles className="w-5 h-5" />
-                    Subscribed </p>) : 
-                  (<p className='flex gap-2'>
-                  <Bell className="w-5 h-5" />
-                     Subscribe </p>)
-                  }
+                  {subscribedVideo ? (
+                    <>
+                      <Sparkles className="w-5 h-5" />
+                      Subscribed
+                    </>
+                  ) : (
+                    <>
+                      <Bell className="w-5 h-5" />
+                      Subscribe
+                    </>
+                  )}
                 </button>
               </div>
             </>
           ) : (
-            <p className="text-center text-gray-600 text-lg">
-              No video data found
-            </p>
+            <p className="text-gray-600 text-center text-lg">Video not found.</p>
           )}
         </div>
 
-        <div className="w-full lg:w-1/3 space-y-4 overflow-y-auto max-h-[85vh]">
-          {isOpen && (
-            <div className="flex justify-between">
-              <p>
-                <Edit onClick={() => setIsUpdatePopUpOpen(true)} />
-              </p>
-              <p>
-                <Delete onClick={handleVideoDelete} />
-              </p>
-              <p>
+        {/* Right Section: Controls */}
+        {isOpen && (
+          <div className="w-full lg:w-1/3 bg-white rounded-lg shadow p-4 space-y-4 max-h-[85vh] overflow-y-auto">
+            <h3 className="text-lg font-semibold text-gray-700">Manage</h3>
+            <div className="flex justify-between items-center gap-4">
+              <button
+                onClick={() => setIsUpdatePopUpOpen(true)}
+                className="text-blue-600 hover:text-blue-800 flex items-center gap-1"
+              >
+                <Edit size={18} /> Edit
+              </button>
+              <button
+                onClick={handleVideoDelete}
+                className="text-red-600 hover:text-red-800 flex items-center gap-1"
+              >
+                <Delete size={18} /> Delete
+              </button>
+              <div
+                className={`w-12 h-6 flex items-center px-1 rounded-full cursor-pointer transition ${
+                  isOn ? 'bg-green-500' : 'bg-gray-300'
+                }`}
+                onClick={toggleSwitch}
+              >
                 <div
-                  className={`w-12 h-6 flex items-center px-1 rounded-full cursor-pointer transition-all duration-300 ${
-                    isOn ? 'bg-blue-500' : 'bg-gray-300'
+                  className={`w-5 h-5 bg-white rounded-full shadow-md transform transition-transform ${
+                    isOn ? 'translate-x-6' : 'translate-x-0'
                   }`}
-                  onClick={toggleSwitch}
-                >
-                  <div
-                    className={`w-5 h-5 rounded-full bg-white shadow-md transform transition-transform duration-300 ${
-                      isOn ? 'translate-x-6' : 'translate-x-0'
-                    }`}
-                  ></div>
-                </div>
-              </p>
+                ></div>
+              </div>
             </div>
-          ) }
-        </div>
+          </div>
+        )}
       </div>
 
-      <div className="mx-10 mt-4">
-  <h2 className="text-xl font-semibold text-gray-800 mb-4">Comments</h2>
+      {/* Comments Section */}
+      <div className="px-6 lg:px-10 py-4">
+        <h2 className="text-xl font-semibold text-gray-800 mb-4">Comments</h2>
 
-  {/* Add Comment Input */}
-  <div className="flex items-center gap-2 mb-6">
-    <input
-      type="text"
-      className="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-      placeholder="Add a comment..."
-      value={content}
-      onChange={(e) => setContent(e.target.value)}
-    />
-    <button
-      type="button"
-      className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition"
-      onClick={handelAddComment}
-      disabled={!content.trim()}
-    >
-      Add
-    </button>
-  </div>
+        {/* Comment Input */}
+        <div className="flex items-center gap-3 mb-6">
+          <input
+            type="text"
+            className="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+            placeholder="Add a comment..."
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+          />
+          <button
+            className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition"
+            onClick={handelAddComment}
+            disabled={!content.trim()}
+          >
+            Add
+          </button>
+        </div>
 
-  {/* Comment List */}
-  {comment.length > 0 ? (
-    <div className="flex flex-col gap-4 bg-white p-4 rounded-lg shadow-sm">
-      {comment.map((cmt) => (
-        <CommentCard
-          key={cmt._id}
-          cmt={cmt}
-          getAllComment={getAllComment}
-        />
-      ))}
-    </div>
-  ) : (
-    <p className="text-gray-500">No comments yet.</p>
-  )}
-</div>
+        {/* Comment List */}
+        {comment.length > 0 ? (
+          <div className="flex flex-col gap-4 bg-white p-4 rounded-lg shadow-sm">
+            {comment.map((cmt) => (
+              <CommentCard
+                key={cmt._id}
+                cmt={cmt}
+                getAllComment={getAllComment}
+              />
+            ))}
+          </div>
+        ) : (
+          <p className="text-gray-500">No comments yet.</p>
+        )}
+      </div>
 
+      {/* Update Video Modal */}
       {isUpdatePopUpOpen && (
         <UpdateVideoDetail
           video={video}

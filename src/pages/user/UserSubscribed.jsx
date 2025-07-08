@@ -33,10 +33,11 @@ const UserSubscribed = () => {
   return (
     <>
       <Header />
-      <div className="flex min-h-[calc(100vh-64px)] bg-gray-50">
+      <div className="flex min-h-161 bg-gray-50">
         <Sidebar />
 
-        <main className="flex-1 px-8 py-6">
+        <main className="p-3 w-full">
+
           <h2 className="text-3xl font-bold text-gray-800 mb-6">
             {activeTab === 'subscribedTo'
               ? 'Users I Subscribed To'
@@ -81,7 +82,7 @@ const UserSubscribed = () => {
 
           {/* Channel Cards */}
           {channels.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-6  gap-6">
               {channels.map((obj) => (
                 <div
                   key={obj?._id}

@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Eye, EyeOff, Mail, Lock, ArrowRight, Sparkles } from 'lucide-react';
+import { Eye, EyeOff, Mail, Lock, ArrowRight, Sparkles, LogIn } from 'lucide-react';
 import Header from '../../components/Header';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import VideoTubeLogo from '../../assets/logo';
 
 
 const LoginForm = () => {
@@ -64,7 +65,7 @@ const LoginForm = () => {
     <>
       <Header />
       <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100">
-        {/* Animated Background Elements */}
+       
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-purple-400/20 to-pink-400/20 rounded-full blur-3xl animate-pulse"></div>
           <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-blue-400/20 to-indigo-400/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
@@ -73,35 +74,29 @@ const LoginForm = () => {
 
         <div className="relative flex items-center justify-center min-h-screen p-4">
           <div className="w-full max-w-md">
-            {/* Main Card */}
+          
             <div className="bg-white/70 backdrop-blur-2xl p-8 rounded-3xl shadow-2xl border border-white/20 relative overflow-hidden">
-              {/* Decorative gradient overlay */}
+
               <div className="absolute inset-0 bg-gradient-to-br from-white/50 to-transparent pointer-events-none"></div>
               
-              {/* Content */}
+    
               <div className="relative z-10">
-                {/* Header */}
+         
                 <div className="text-center mb-8">
-                  <div className="inline-flex gap-1 items-center justify-center w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl mb-4 shadow-lg">
-                    <Sparkles className="w-8 h-8 text-white" />
-                    <span className="text-white text-lg font-bold">VT</span>
-                  </div>
-                  <h2 className="text-3xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent mb-2">
-                    Welcome Back
+                  <h2 className="flex gap-1 text-3xl items-center justify-center font-bold bg-gradient-to-r  from-gray-800 to-gray-600 bg-clip-text text-transparent mb-2">
+                     <Sparkles size={30} className='text-purple-600'/>Welcome Back
                   </h2>
                   <p className="text-gray-600">Sign in to continue your journey</p>
                 </div>
 
-                {/* Error Message */}
                 {error && (
                   <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl">
                     <p className="text-red-600 text-sm text-center font-medium">{error}</p>
                   </div>
                 )}
 
-                {/* Form */}
-                <div className="space-y-6">
-                  {/* Email/Username Field */}
+                <div className="space-y-2">
+              
                   <div className="relative">
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
                       Email or Username
@@ -131,7 +126,6 @@ const LoginForm = () => {
                     </div>
                   </div>
 
-                  {/* Password Field */}
                   <div className="relative">
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
                       Password
@@ -168,14 +162,12 @@ const LoginForm = () => {
                     </div>
                   </div>
 
-                  {/* Forgot Password */}
                   <div className="text-right">
                     <a href="#" className="text-sm text-indigo-600 hover:text-indigo-800 font-medium transition-colors">
                       Forgot password?
                     </a>
                   </div>
 
-                  {/* Submit Button */}
                   <button
                     type="submit"
                     disabled={isLoading}
@@ -203,30 +195,6 @@ const LoginForm = () => {
                   </button>
                 </div>
 
-                {/* Divider */}
-                <div className="my-8 flex items-center">
-                  <div className="flex-1 border-t border-gray-200"></div>
-                  <span className="px-4 text-sm text-gray-500 bg-white/50 rounded-full">or</span>
-                  <div className="flex-1 border-t border-gray-200"></div>
-                </div>
-
-                {/* Social Login Buttons */}
-                <div className="space-y-3">
-                  <button className="w-full flex items-center justify-center gap-3 py-3 px-4 border-2 border-gray-200 
-                                   rounded-xl hover:border-gray-300 hover:bg-white/50 transition-all duration-300 
-                                   font-medium text-gray-700 hover:scale-[1.02]">
-                    <div className="w-5 h-5 bg-gradient-to-r from-blue-500 to-blue-600 rounded"></div>
-                    Continue with Google
-                  </button>
-                  <button className="w-full flex items-center justify-center gap-3 py-3 px-4 border-2 border-gray-200 
-                                   rounded-xl hover:border-gray-300 hover:bg-white/50 transition-all duration-300 
-                                   font-medium text-gray-700 hover:scale-[1.02]">
-                    <div className="w-5 h-5 bg-gradient-to-r from-gray-800 to-gray-900 rounded"></div>
-                    Continue with GitHub
-                  </button>
-                </div>
-
-                {/* Sign Up Link */}
                 <p className="text-center text-sm text-gray-600 mt-8">
                   Don't have an account?{' '}
                   <a href="/user/signup" className="font-semibold text-indigo-600 hover:text-indigo-800 
@@ -237,10 +205,10 @@ const LoginForm = () => {
               </div>
             </div>
 
-            {/* Bottom decorative text */}
             <p className="text-center text-xs text-gray-500 mt-6">
               Secure login powered by advanced encryption
             </p>
+
           </div>
         </div>
       </div>

@@ -1,17 +1,29 @@
-import {  useState } from 'react';
+import {  useEffect, useState } from 'react';
 import Header from '../../components/Header';
 import Sidebar from '../../components/Sidebar';
-import { useAuth } from '../../context/AuthContext';
 import { Edit } from 'lucide-react';
 import UpdateModal from '../../components/UpdateAvatar';
 import UpdateuserDetail from '../../components/UserUpdatePopUp';
+import { apiCall } from '../../utils/ApiCall';
 
 const UserProfile = () => {
-  const { userData } = useAuth();
-  const [userValue, setUserValue] = useState(userData?.data?.user);
+
+  const [userValue, setUserValue] = useState(null);
   const [showUpadetPopUpAvatar, setShowUpadetPopUpAvatar] = useState(false);
   const [userDetail, setUserDetail] = useState(false);
   const [image, setImage] = useState('');
+
+
+  useEffect( () => {
+    const getuser  = async () => {
+      const currUser = await apiCall(`/api/users/current-user`)
+
+      if(currUser?.success)
+          setUserValue(currUser.data)
+    }
+
+    getuser();
+  })
 
   const UpdateImage = (img) => {
     setShowUpadetPopUpAvatar(true);
@@ -25,10 +37,9 @@ const UserProfile = () => {
   return (
     <>
       <Header />
-      <div className="flex min-h-screen bg-gradient-to-br from-gray-100 to-gray-200">
+      <div className="flex min-h-161">
         <Sidebar />
-
-        <main className="flex-1 p-8">
+        <main className="p-3 w-full">
           <div className="bg-white rounded-xl shadow-xl overflow-hidden relative">
             {/* Cover Image */}
             <div className="relative h-56 bg-gray-200 group">

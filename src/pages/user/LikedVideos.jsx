@@ -26,7 +26,7 @@ const LikedVideos = () => {
   return (
     <>
     <Header />
-      <div className="flex min-h-157 bg-gray-50">
+      <div className="flex min-h-161 bg-gray-50">
         <Sidebar/>
       <div className="px-8 py-6 w-full">
       <h2 className="text-3xl font-bold mb-6 text-gray-800">Liked Videos</h2>
