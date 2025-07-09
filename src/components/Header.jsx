@@ -1,25 +1,45 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Bell, Upload, User, Search, Menu, X } from 'lucide-react';
 import VideoTubeLogoDark from '../assets/logo';
 import PublishModal from '../pages/video/PublishModal';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { apiCall } from '../utils/ApiCall';
+import Tabs from './Tabs';
+import TweetsModal  from './TweetsModal';
 
 
 const Header = () => {
 
   const navigate = useNavigate();
   const { isLogin, userData } = useAuth();
+  
+  const [userAvatar, setUserAvatar] = useState('');
+  
+  useEffect( () => {
+    const getuser  = async () => {
+      const currUser = await apiCall(`/api/users/current-user`)
+
+      if(currUser?.success)
+          setUserAvatar(currUser.data?.avatar)
+    }
+
+    getuser();
+  } , [userAvatar])
  
-  const [userAvatar, setUserAvatar] = useState(userData?.data?.user?.avatar);
   const [openPublishPopup, setOpenPublishPopup] = useState(false);
+  const [openTweetsPopup, setOpenTweetsPopup] = useState(false);
   
   const [searchValue, setSearchValue] = useState('');
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [notificationCount, setNotificationCount] = useState(3);
 
+  const [activeTab, setActiveTab] = useState(false);
  
-
+  const handleTabs = () => {
+    setActiveTab(true)
+    setOpenTweetsPopup(true)
+  }
   return (
     <>
       <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-xl border-b border-gray-200/60 shadow-sm">
@@ -32,7 +52,6 @@ const Header = () => {
             <VideoTubeLogoDark />
           </div>
 
-          {/* Search Bar */}
           {isLogin && (
             <div className="flex-1 max-w-2xl mx-8 hidden md:block">
               <div className={`relative transition-all duration-300 ${isSearchFocused ? 'scale-105' : ''}`}>
@@ -63,27 +82,37 @@ const Header = () => {
             </div>
           )}
 
-          {/* Mobile Search Button */}
+          
           {isLogin && (
             <button className="md:hidden p-2 hover:bg-gray-100 rounded-xl transition-colors">
               <Search className="w-5 h-5 text-gray-600" />
             </button>
           )}
 
-          {/* Right Section */}
           {isLogin ? (
             <div className="flex items-center gap-2 lg:gap-4">
-              {/* Upload Button */}
+              
+              <div className="relative group">
+                <div 
+                className="flex items-center gap-3 p-1 hover:bg-gray-100 rounded-xl transition-colors"
+                onClick={handleTabs}
+                >
+                  <Tabs activeTab={activeTab}/>
+                </div>
+              </div>
+
+              <div>
               <button
                 onClick={() => setOpenPublishPopup(true)}
-                className="flex items-center gap-2 px-4 py-2  bg-gradient-to-br from-indigo-500 to-purple-600
-                         text-white rounded-xl hover:from-red-600 hover:to-red-700 
-                         transition-all duration-300 hover:scale-105 hover:shadow-lg
-                         font-medium text-sm"
+                className="flex items-center gap-2 px-4 py-2  
+                        bg-gradient-to-b from-indigo-500 via-purple-500 to-pink-500 
+                        text-white rounded-xl
+                        font-medium text-sm" 
               >
                 <Upload className="w-4 h-4" />
                 <span className="hidden sm:inline">Upload</span>
               </button>
+              </div>
 
               {/* Notifications */}
               <div className="relative">
@@ -103,7 +132,7 @@ const Header = () => {
               <div className="relative group">
                 <button className="flex items-center gap-3 p-1 hover:bg-gray-100 rounded-xl transition-colors">
                   <img
-                    src={userAvatar}
+                    src={userAvatar }
                     alt="User Avatar"
                     className="w-8 h-8 lg:w-9 lg:h-9 rounded-full object-cover border-2 border-gray-200 
                              group-hover:border-red-300 transition-colors"
@@ -143,9 +172,13 @@ const Header = () => {
         )}
       </header>
 
-      {/* Publish Modal */}
+      
       {openPublishPopup && (
         <PublishModal onClose={() => setOpenPublishPopup(false)} />
+      )}
+      
+      {openTweetsPopup && (
+        <TweetsModal onClose={() => setOpenTweetsPopup(false)} setActiveTab ={setActiveTab} />
       )}
     </>
   );

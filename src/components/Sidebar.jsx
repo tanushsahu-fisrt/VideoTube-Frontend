@@ -7,6 +7,7 @@ import {
   LayoutDashboard,
   LogOut,
   Sparkles,
+  Bird,
 } from 'lucide-react';
 import { apiCall } from '../utils/ApiCall';
 
@@ -15,14 +16,11 @@ const Sidebar = () => {
   const navigate = useNavigate();
 
   const menuItems = [
-    { 
-      to: '/user', 
-      label: 'Home', 
-      icon: <Home size={20} /> , 
-    },
-    { to: '/my-videos', label: 'My Videos', icon: <Video size={20} /> },
-    { to: '/profile', label: 'Profile', icon: <User size={20} /> },
+    { to: '/user', label: 'Home', icon: <Home size={20} /> },
     { to: '/dashboard', label: 'Channel', icon: <LayoutDashboard size={20} /> },
+    { to: '/my-videos', label: 'My Videos', icon: <Video size={20} /> },
+    { to: '/tweet', label: 'Tweets', icon: <Bird size={20} /> },
+    { to: '/profile', label: 'Profile', icon: <User size={20} /> },
     { to: '/user/liked-video', label: 'Liked Videos', icon: <ThumbsUp size={20} /> },
     { to: '/user/subscribed-list', label: 'Subscribers', icon: <Sparkles size={20} /> },
   ];
@@ -37,7 +35,9 @@ const Sidebar = () => {
   };
 
   return (
-    <aside className="w-64 h-auto bg-gradient-to-b from-indigo-500 via-purple-500 to-pink-500 text-white p-6 flex flex-col justify-between shadow-xl">
+    <aside className="w-64 h-auto 
+    bg-gradient-to-b from-indigo-500 via-purple-500 to-pink-500 
+    text-white p-6 flex flex-col justify-between shadow-xl">
       <div>
         <nav className="flex flex-col gap-2">
           { menuItems.map(({ to, label, icon }) => {
@@ -46,7 +46,7 @@ const Sidebar = () => {
               <Link
                 key={to}
                 to={to}
-                className={`flex items-center gap-3 px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
+                className={`flex items-center gap-3 px-4 py-2 rounded-full font-medium transition-all duration-200 ${
                   isActive
                     ? 'bg-white shadow text-purple-600'
                     : 'hover:bg-white/10 text-white/80 hover:text-white'

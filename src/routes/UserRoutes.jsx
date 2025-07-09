@@ -9,6 +9,7 @@ import UserVideos from "../pages/video/UserVideos";
 import UserDashboard from "../pages/video/UserDashboard";
 import LikedVideos from "../pages/user/LikedVideos";
 import UserSubscribed from "../pages/user/UserSubscribed";
+import Tweets from "../pages/LoggedInUser/Tweets";
 
 
 const UserRoutes = () => {
@@ -25,6 +26,7 @@ const UserRoutes = () => {
             <Route path="/dashboard" element={<UserDashboard />} />
             <Route path="/user/liked-video" element={<LikedVideos />} />
             <Route path="/user/subscribed-list" element={<UserSubscribed />} />
+            <Route path="/tweet" element={<Tweets />} />
         </Routes>
     )
 

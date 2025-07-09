@@ -8,27 +8,32 @@ import { Search } from 'lucide-react';
 const UserSubscribed = () => {
   const [activeTab, setActiveTab] = useState('subscribedTo');
   const [channels, setChannels] = useState([]);
+  
   const { userData } = useAuth();
-
+  
+  
+  useEffect(() => {
   const userId = userData?.data?.user?._id;
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const endpoint =
-        activeTab === 'subscribedTo'
-          ? `/api/subscriptions/u/${userId}`
-          : `/api/subscriptions/c/${userId}`;
+  if (!userId) return; // prevent fetch if not ready
 
-      try {
-        const res = await apiCall(endpoint, 'GET');
-        setChannels(res?.data || []);
-      } catch (err) {
-        console.error('Error fetching data', err);
-      }
-    };
+  const fetchData = async () => {
+    const endpoint =
+      activeTab === 'subscribedTo'
+        ? `/api/subscriptions/u/${userId}`
+        : `/api/subscriptions/c/${userId}`;
 
-    fetchData();
-  }, [activeTab, userId]);
+    try {
+      const res = await apiCall(endpoint, 'GET');
+      setChannels(res?.data || []);
+    } catch (err) {
+      console.error('Error fetching data', err);
+    }
+  };
+
+  fetchData();
+}, [userData?.data?.user?._id, activeTab]);
+
 
   return (
     <>

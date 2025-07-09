@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { Bird, Plus, Video } from 'lucide-react';
 
-const Tabs = () => {
-  const [activeTab, setActiveTab] = useState('Videos');
+
+const Tabs = ({ activeTab}) => {
 
   return (
     <div className="flex justify-center">
@@ -9,19 +9,16 @@ const Tabs = () => {
         bg-gradient-to-b from-indigo-500 via-purple-500 to-pink-500 
         text-center px-1 py-1"
       >
-        {['Videos', 'Tweets'].map((ele) => (
-          <button
-            key={ele}
-            onClick={() => setActiveTab(ele)}
-            className={`px-6 py-2 rounded-full font-medium transition-all duration-300
-              ${activeTab === ele
+        <button
+            className={`flex gap-1 px-4 py-2 rounded-full font-medium transition-all duration-300
+              ${activeTab 
                 ? 'bg-white text-indigo-600 shadow'
                 : 'bg-transparent text-white hover:bg-white/20'
               }`}
           >
-            {ele}
+          <Plus/> tweets
           </button>
-        ))}
+        
       </div>
     </div>
   );

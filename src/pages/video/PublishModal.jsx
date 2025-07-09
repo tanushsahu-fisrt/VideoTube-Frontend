@@ -42,7 +42,7 @@ const PublishModal = ({ onClose }) => {
   return (
     <div className="fixed inset-0 bg-black/40 z-50 flex justify-center items-center px-4 backdrop-blur-sm">
       <div className="bg-white w-full max-w-lg rounded-2xl shadow-2xl p-8 relative animate-fade-in-up">
-        {/* Close Button */}
+        
         <button
           onClick={onClose}
           className="absolute top-4 right-4 text-gray-400 hover:text-red-600 transition"

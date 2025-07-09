@@ -77,54 +77,9 @@ const UserDashboard = () => {
             ))}
           </div>
 
-          {/* Divider */}
-          <div className="border-t border-gray-200 my-8" />
+         
 
-          {/* Video Section Header */}
-          <h2 className="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-            <Video className="text-purple-600" /> Your Videos
-          </h2>
-
-          {/* Videos */}
-          {videos.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 overflow-y-auto max-h-[300px] pr-2 hide-scrollbar">
-              {videos.map((video) => (
-                <div
-                  key={video._id}
-                  onClick={() =>
-                    navigate(`/user/video/${video._id}`, {
-                      state: { video: video, isIconOpen: true },
-                    })
-                  }
-                  className="bg-white shadow-md hover:shadow-xl transition rounded-xl cursor-pointer overflow-hidden border border-gray-100"
-                >
-                  <img
-                    src={video?.thumbnail}
-                    alt={video?.title}
-                    className="w-full h-40 object-cover"
-                  />
-                  <div className="p-4">
-                    <h3 className="text-md font-semibold truncate text-gray-800">
-                      {video?.title}
-                    </h3>
-                    <p className="text-sm text-gray-600 line-clamp-2">
-                      {video?.description}
-                    </p>
-                    <p className="text-xs text-gray-500 mt-2">
-                      {Math.round(video?.duration)} sec • {video?.views} views
-                    </p>
-                    <p className="text-xs font-medium text-gray-600 mt-1">
-                      Public: <span className={video.ispublished ? 'text-green-600' : 'text-red-500'}>{video.ispublished ? 'Yes' : 'No'}</span>
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <p className="text-center text-gray-600 text-lg mt-10">
-              No videos uploaded yet.
-            </p>
-          )}
+          
         </main>
       </div>
     </>
