@@ -12,20 +12,22 @@ import TweetsModal  from './TweetsModal';
 const Header = () => {
 
   const navigate = useNavigate();
-  const { isLogin, userData } = useAuth();
+  const { isLogin } = useAuth();
   
   const [userAvatar, setUserAvatar] = useState('');
-  
+
+
   useEffect( () => {
     const getuser  = async () => {
-      const currUser = await apiCall(`/api/users/current-user`)
-
-      if(currUser?.success)
-          setUserAvatar(currUser.data?.avatar)
-    }
+        const storedUser = sessionStorage.getItem("user");
+      if (storedUser) {
+        setUserAvatar(JSON.parse(storedUser).avatar);
+      }
+    };
 
     getuser();
-  } , [userAvatar])
+  },[])
+
  
   const [openPublishPopup, setOpenPublishPopup] = useState(false);
   const [openTweetsPopup, setOpenTweetsPopup] = useState(false);

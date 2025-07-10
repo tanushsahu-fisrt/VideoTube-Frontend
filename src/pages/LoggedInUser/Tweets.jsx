@@ -5,54 +5,50 @@ import { apiCall } from '../../utils/ApiCall';
 import { Heart, Sparkle } from 'lucide-react';
 import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
-import { data } from 'react-router-dom';
 
 const Tweets = () => {
   const [tweets, setTweets] = useState([]);
-  const [isSubscribed , setIsSubscribed]  = useState(false);
+  const [isSubscribed, setIsSubscribed] = useState(false);
 
   const { userData } = useAuth();
 
   let userId;
   userId = userData?.data?.user?._id;
   useEffect(() => {
-
     const getTweet = async () => {
-        const allUserTweet = await apiCall('/api/tweets');
+      const allUserTweet = await apiCall('/api/tweets');
 
-      if (allUserTweet?.success) 
-        setTweets(allUserTweet?.data);
+      if (allUserTweet?.success) setTweets(allUserTweet?.data);
     };
 
     getTweet();
   }, []);
 
   const handleSubscribtion = async (channelId) => {
-    try {      
+    try {
       const res = await axios.post(`/api/subscriptions/c/${channelId}`);
-        
-      if(res.data.success){
-        setIsSubscribed(true)
+
+      if (res.data.success) {
+        setIsSubscribed(true);
       }
     } catch (err) {
       console.log(err);
     }
   };
-  
+
   return (
     <>
       <Header />
       <div className="flex bg-gray-100 min-h-screen">
         {/* Sidebar */}
         <Sidebar />
-
+    <div
+    className='px-8 py-6 w-full'>
         <main className="flex-1 flex justify-center py-6 px-4">
-        
-          <div 
-          className="w-full max-w-2xl
+          <div
+            className="w-full max-w-2xl
           max-h-[600px] overflow-y-scroll overflow-x-hidden scroll-smooth hide-scrollbar"
           >
-            
             {/* Tweets List */}
             {tweets.length > 0 ? (
               tweets.map((ele) => (
@@ -80,28 +76,31 @@ const Tweets = () => {
                           </p>
                         </div>
                       </div>
-                      <p className="mt-2 text-xl text-gray-700">{ele.content}</p>
+                      <p className="mt-2 text-xl text-gray-700">
+                        {ele.content}
+                      </p>
                     </div>
                   </div>
-                  <div className='flex items-center justify-between'>
-                        <button 
-                        className='px-3 py-1 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:scale-105'
-                        >
-                            <Heart className='mt-1' />
-                        </button>
-                        {
-                            ele?.owner?._id != userId && (
-                        <button 
-                            className='flex items-center gap-1 cursor-pointer px-3 py-1 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:scale-105'
-                            onClick={() => handleSubscribtion(ele?.owner?._id)}
-                        >
-                          {isSubscribed ? 
-                             ( <div className='flex gap-1 items-center'><Sparkle className='w-5 h-5' /> Subscribed </div> ) : 
-                             ( <div className='flex gap-1 items-center'><Sparkle className='w-5 h-5' /> Subscribe </div>)
-                          }
-                          </button>
-                        )
-                        }
+                  <div className="flex items-center justify-between">
+                    <button className="px-3 py-1 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:scale-105">
+                      <Heart className="mt-1" />
+                    </button>
+                    {ele?.owner?._id != userId && (
+                      <button
+                        className="flex items-center gap-1 cursor-pointer px-3 py-1 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:scale-105"
+                        onClick={() => handleSubscribtion(ele?.owner?._id)}
+                      >
+                        {isSubscribed ? (
+                          <div className="flex gap-1 items-center">
+                            <Sparkle className="w-5 h-5" /> Subscribed{' '}
+                          </div>
+                        ) : (
+                          <div className="flex gap-1 items-center">
+                            <Sparkle className="w-5 h-5" /> Subscribe{' '}
+                          </div>
+                        )}
+                      </button>
+                    )}
                   </div>
                 </div>
               ))
@@ -110,6 +109,7 @@ const Tweets = () => {
             )}
           </div>
         </main>
+      </div>
       </div>
     </>
   );

@@ -12,6 +12,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import UpdateVideoDetail from './UpdateVideoDetail';
 import CommentCard from '../../components/comment/CommentCard';
+import { apiCall } from '../../utils/ApiCall';
 
 const VideoPage = () => {
   const location = useLocation();
@@ -27,6 +28,8 @@ const VideoPage = () => {
   const [likedVideo, setLikedVideo] = useState(false);
   const [subscribedVideo, setSubscribedVideo] = useState(false);
   const [isOn, setIsOn] = useState(video?.ispublished);
+  const [subsLength, setSubsLength] = useState(null);
+  const [userId, setUserId] = useState(video?.owner?._id);
 
   const handleVideoDelete = async () => {
     const res = await axios.delete(`/api/videos/${videoId}`);
@@ -38,8 +41,26 @@ const VideoPage = () => {
     if (res.data.success) setComment(res.data.data);
   };
 
+
   useEffect(() => {
     getAllComment();
+  }, []);
+
+  const fetchData = async () => {
+    const endpoint = `/api/subscriptions/c/${userId}`
+    try {
+      const res = await apiCall(endpoint, 'GET');
+
+      if(res?.success){
+        setSubsLength(res?.data.length || 0);
+      }
+    } catch (err) {
+      console.error('Error fetching data', err);
+    }
+  };
+  
+  useEffect(() => {
+    fetchData();
   }, []);
 
   const toggleSwitch = () => {
@@ -85,6 +106,7 @@ const VideoPage = () => {
     }
   };
 
+
   return (
     <>
       <Header />
@@ -110,51 +132,73 @@ const VideoPage = () => {
                 {new Date(video.createdAt).toLocaleDateString()}
               </p>
 
-              {/* Action Buttons */}
-              <div className="flex flex-wrap gap-3 mt-4">
-                <button
-                  className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
-                    likedVideo
-                      ? 'bg-red-100 text-red-600 hover:bg-red-200'
-                      : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
-                  }`}
-                  onClick={handleVideoLike}
-                >
-                  <ThumbsUp
-                    className={`w-5 h-5 ${likedVideo ? 'fill-red-500' : ''}`}
+              <div className="mt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                {/* Channel Info */}
+                <div className="flex items-center gap-3">
+                  <img
+                    src={video?.owner?.avatar}
+                    alt={video?.owner?._id}
+                    className="w-10 h-10 rounded-full border border-cyan-300"
                   />
-                  Like
-                </button>
+                  <div>
+                    <p className="text-sm font-semibold text-gray-800">
+                      {video?.owner?.username}
+                    </p>
+                    <p className="text-sm text-gray-500">{subsLength} subscribers</p>
+                  </div>
+                </div>
 
-                <button className="flex items-center gap-2 px-4 py-2 bg-gray-200 text-gray-800 rounded-full text-sm font-medium hover:bg-gray-300 transition">
-                  <MessageCircle className="w-5 h-5" />
-                  Comment
-                </button>
+                {/* Buttons */}
+                <div className="flex flex-wrap items-center gap-3">
+                  {/* Subscribe Button */}
+                  <button
+                    onClick={handleSubscribtion}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium shadow-md transition ${
+                      subscribedVideo
+                        ? 'bg-red-500 text-white hover:bg-red-600'
+                        : 'bg-blue-600 text-white hover:bg-blue-700'
+                    }`}
+                  >
+                    {subscribedVideo ? (
+                      <>
+                        <Sparkles className="w-5 h-5" />
+                        Subscribed
+                      </>
+                    ) : (
+                      <>
+                        <Bell className="w-5 h-5" />
+                        Subscribe
+                      </>
+                    )}
+                  </button>
 
-                <button
-                  className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition ${
-                    subscribedVideo
-                      ? 'bg-red-500 text-white hover:bg-red-600'
-                      : 'bg-blue-600 text-white hover:bg-blue-700'
-                  }`}
-                  onClick={handleSubscribtion}
-                >
-                  {subscribedVideo ? (
-                    <>
-                      <Sparkles className="w-5 h-5" />
-                      Subscribed
-                    </>
-                  ) : (
-                    <>
-                      <Bell className="w-5 h-5" />
-                      Subscribe
-                    </>
-                  )}
-                </button>
+                  {/* Like Button */}
+                  <button
+                    onClick={handleVideoLike}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium shadow-md transition ${
+                      likedVideo
+                        ? 'bg-red-100 text-red-600 hover:bg-red-200'
+                        : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
+                    }`}
+                  >
+                    <ThumbsUp
+                      className={`w-5 h-5 ${likedVideo ? 'fill-red-500' : ''}`}
+                    />
+                    Like
+                  </button>
+
+                  {/* Comment Button */}
+                  <button className="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium bg-gray-100 text-gray-800 shadow-md hover:bg-gray-200 transition">
+                    <MessageCircle className="w-5 h-5" />
+                    Comment
+                  </button>
+                </div>
               </div>
             </>
           ) : (
-            <p className="text-gray-600 text-center text-lg">Video not found.</p>
+            <p className="text-gray-600 text-center text-lg">
+              Video not found.
+            </p>
           )}
         </div>
 

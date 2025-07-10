@@ -19,16 +19,25 @@ const VideoCard = ({ video }) => {
             alt={video?.title}
             className="w-full h-36 object-cover"
           />
-          <div className="p-3">
-            <h3 className="text-sm font-semibold mb-1 truncate">
-              {video?.title}
-            </h3>
-            <p className="text-xs text-gray-600 line-clamp-2">
-              {video?.description}
-            </p>
-            <p className="text-xs text-gray-500 mt-1">
-              {Math.round(video?.duration)} sec • {video?.views} views
-            </p>
+          <div className="p-3 flex items-center ">
+              <h3 className="text-sm font-semibold mb-1 truncate">
+                <img
+                  src={video?.owner?.avatar}
+                  alt={video?.owner?._id}
+                  className="w-8 h-8 rounded-full border-1 border-cyan-300"
+                />
+              </h3>
+            <div className='mx-5'>
+              <h3 className="text-sm font-semibold mb-1 truncate">
+                {video?.title}
+              </h3>
+              <p className="text-xs text-gray-600 line-clamp-2">
+                {video?.description}
+              </p>
+              <p className="text-xs text-gray-500 mt-1">
+                {Math.round(video?.duration)} sec • {video?.views} views
+              </p>
+            </div>
           </div>
         </div>
       ) : (

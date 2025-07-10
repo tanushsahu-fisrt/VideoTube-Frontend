@@ -10,6 +10,7 @@ import {
   Bird,
 } from 'lucide-react';
 import { apiCall } from '../utils/ApiCall';
+import { useAuth } from '../context/AuthContext';
 
 const Sidebar = () => {
   const location = useLocation();
@@ -25,11 +26,13 @@ const Sidebar = () => {
     { to: '/user/subscribed-list', label: 'Subscribers', icon: <Sparkles size={20} /> },
   ];
 
+  const { setIsLogin } = useAuth();
   const handleLogOut = async () => {
     const logOut = await apiCall(`/api/users/logout`, 'POST');
     if (logOut.success) {
       sessionStorage.removeItem('user');
       sessionStorage.removeItem('accessToken');
+      setIsLogin(false)
       navigate('/');
     }
   };

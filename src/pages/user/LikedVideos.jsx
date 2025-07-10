@@ -15,6 +15,7 @@ const LikedVideos = () => {
         if (response.data.success) {
           setLikedVideos(response.data.data);
         }
+       
       } catch (error) {
         console.error("Error fetching liked videos:", error);
       }
@@ -37,19 +38,28 @@ const LikedVideos = () => {
               key={obj?._id}
               onClick={() => navigate(`/user/video/${obj?.video?._id}`, { state: { video : obj.video } })}
               className="cursor-pointer bg-white rounded-xl shadow hover:shadow-lg transition duration-300"
-            >
+            > 
               <img
                 src={obj?.video?.thumbnail}
                 alt={obj?.video?.title}
                 className="rounded-t-xl w-full h-40 object-cover"
               />
-              <div className="p-4">
+              <div className="p-4 flex">
+                <h3 className="text-sm font-semibold mb-1 truncate">
+                <img
+                  src={obj?.video?.owner?.avatar}
+                  alt={obj?.video?.owner?._id}
+                  className="w-10 h-10 rounded-full border-1 border-cyan-300"
+                />
+                </h3>
+                <div className="mx-5">
                 <h3 className="font-semibold text-gray-900 truncate">{obj?.video?.title}</h3>
                 <p className="text-sm text-gray-500 mt-1 truncate">{obj?.video?.description}</p>
-                <p className="text-xs text-gray-400 mt-2">
+                <p className="text-xs text-gray-400 mt-1">
                   {obj?.video?.views} views •{" "}
                   {new Date(obj?.video?.createdAt).toLocaleDateString()}
                 </p>
+                </div>
               </div>
             </div>
           ))}

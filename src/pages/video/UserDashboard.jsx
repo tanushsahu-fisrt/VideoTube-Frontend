@@ -7,7 +7,6 @@ import { InfoIcon, Video } from 'lucide-react';
 
 const UserDashboard = () => {
   const [channelStats, setChannelStats] = useState(null);
-  const [videos, setVideos] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -16,14 +15,6 @@ const UserDashboard = () => {
       if (stats?.success) setChannelStats(stats.data);
     };
     fetchStats();
-  }, []);
-
-  useEffect(() => {
-    const fetchVideos = async () => {
-      const response = await apiCall('/api/dashboard/videos');
-      if (response?.success) setVideos(response.data);
-    };
-    fetchVideos();
   }, []);
 
   const stats = [
@@ -72,14 +63,12 @@ const UserDashboard = () => {
               >
                 <div className="text-4xl mb-2">{stat.icon}</div>
                 <div className="text-md text-gray-600">{stat.label}</div>
-                <div className="text-2xl font-bold text-gray-800">{stat.value}</div>
+                <div className="text-2xl font-bold text-gray-800">
+                  {stat.value}
+                </div>
               </div>
             ))}
           </div>
-
-         
-
-          
         </main>
       </div>
     </>

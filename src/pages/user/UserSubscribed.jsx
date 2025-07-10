@@ -8,12 +8,22 @@ import { Search } from 'lucide-react';
 const UserSubscribed = () => {
   const [activeTab, setActiveTab] = useState('subscribedTo');
   const [channels, setChannels] = useState([]);
+  const [userId, setUserId] = useState('');
   
   const { userData } = useAuth();
   
+  useEffect( () => {
+    const getuser  = async () => {
+      const currUser = await apiCall(`/api/users/current-user`)
+
+      if(currUser?.success)
+          setUserId(currUser.data._id)
+    }
+
+    getuser()
+  } )
   
   useEffect(() => {
-  const userId = userData?.data?.user?._id;
 
   if (!userId) return; // prevent fetch if not ready
 
