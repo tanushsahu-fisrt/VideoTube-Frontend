@@ -1,4 +1,4 @@
-import { User } from 'lucide-react';
+import { Check, User } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
@@ -20,12 +20,18 @@ const VideoCard = ({ video }) => {
             className="w-full h-36 object-cover"
           />
           <div className="p-3 flex items-center ">
-              <h3 className="text-sm font-semibold mb-1 truncate">
+              <h3 className="text-sm justify-center mb-1 truncate ">
                 <img
                   src={video?.owner?.avatar}
                   alt={video?.owner?._id}
-                  className="w-8 h-8 rounded-full border-1 border-cyan-300"
+                  className="w-9 h-9 rounded-full border-1 border-blue-500"
                 />
+                <p className="text-sm flex font-semibold gap-1 items-center">
+                  {video?.owner?.username}
+                  <span className="bg-blue-500 p-0.5 rounded-full flex items-center justify-center">
+                    <Check size={10} className="text-white" />
+                  </span>
+                </p>
               </h3>
             <div className='mx-5'>
               <h3 className="text-sm font-semibold mb-1 truncate">

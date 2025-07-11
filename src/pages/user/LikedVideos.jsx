@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../../components/Header";
 import Sidebar from "../../components/Sidebar";
+import { Check } from "lucide-react";
 
 const LikedVideos = () => {
   const [likedVideos, setLikedVideos] = useState([]);
@@ -51,6 +52,12 @@ const LikedVideos = () => {
                   alt={obj?.video?.owner?._id}
                   className="w-10 h-10 rounded-full border-1 border-cyan-300"
                 />
+                <p className="text-sm flex  gap-1 items-center">
+                  {obj?.video?.owner?.username}
+                  <span className="bg-blue-500 p-0.5 rounded-full flex items-center justify-center">
+                    <Check size={10} className="text-white" />
+                  </span>
+                </p>
                 </h3>
                 <div className="mx-5">
                 <h3 className="font-semibold text-gray-900 truncate">{obj?.video?.title}</h3>

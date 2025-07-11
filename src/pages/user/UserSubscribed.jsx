@@ -116,7 +116,7 @@ const UserSubscribed = () => {
                       {obj?.fullName}
                     </p>
                     <button className="mt-3 w-full py-2 text-sm bg-red-500 hover:bg-red-600 text-white rounded-full transition">
-                      Subscribed
+                      {activeTab == 'subscribedTo' ? 'Subscribed' : (<p className='text-black'>Subscriber</p>)}
                     </button>
                   </div>
                 </div>
