@@ -4,30 +4,27 @@ import Sidebar from '../../components/Sidebar';
 import { apiCall } from '../../utils/ApiCall';
 import { useAuth } from '../../context/AuthContext';
 import { Search } from 'lucide-react';
+import Loader from '../../assets/Loader';
 
 const UserSubscribed = () => {
   const [activeTab, setActiveTab] = useState('subscribedTo');
   const [channels, setChannels] = useState([]);
-  const [userId, setUserId] = useState('');
+  const [loading, setLoading] = useState(true);
   
   const { userData } = useAuth();
   
-  useEffect( () => {
-    const getuser  = async () => {
+  const getuser  = async () => {
       const currUser = await apiCall(`/api/users/current-user`)
 
       if(currUser?.success)
-          setUserId(currUser.data._id)
-    }
+          return currUser.data._id;
+  }
 
-    getuser()
-  } )
-  
   useEffect(() => {
 
-  if (!userId) return; // prevent fetch if not ready
+    const fetchData = async () => {
+    const userId = await getuser()
 
-  const fetchData = async () => {
     const endpoint =
       activeTab === 'subscribedTo'
         ? `/api/subscriptions/u/${userId}`
@@ -35,9 +32,13 @@ const UserSubscribed = () => {
 
     try {
       const res = await apiCall(endpoint, 'GET');
-      setChannels(res?.data || []);
+      if(Object.keys(res.data).length > 0){
+        setChannels(res?.data || []);
+      }
     } catch (err) {
       console.error('Error fetching data', err);
+    } finally{
+      setLoading(false)
     }
   };
 
@@ -48,7 +49,7 @@ const UserSubscribed = () => {
   return (
     <>
       <Header />
-      <div className="flex min-h-161 bg-gray-50">
+      <div className="flex min-h-161 bg-gradient-to-br from-white via-yellow-100 to-pink-300">
         <Sidebar />
 
         <main className="p-3 w-full">
@@ -96,7 +97,10 @@ const UserSubscribed = () => {
           </div>
 
           {/* Channel Cards */}
-          {channels.length > 0 ? (
+          {
+          loading ?
+          <Loader /> :
+          channels.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-6  gap-6">
               {channels.map((obj) => (
                 <div
@@ -124,7 +128,7 @@ const UserSubscribed = () => {
             </div>
           ) : (
             <div className="text-center text-gray-500 text-lg mt-12">
-              No data to show in this tab.
+              OOps !! No subscribers 
             </div>
           )}
         </main>

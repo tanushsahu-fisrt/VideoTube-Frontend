@@ -5,6 +5,7 @@ import { Edit } from 'lucide-react';
 import UpdateModal from '../../components/UpdateAvatar';
 import UpdateuserDetail from '../../components/UserUpdatePopUp';
 import { apiCall } from '../../utils/ApiCall';
+import Loader from '../../assets/Loader';
 
 const UserProfile = () => {
 
@@ -12,14 +13,17 @@ const UserProfile = () => {
   const [showUpadetPopUpAvatar, setShowUpadetPopUpAvatar] = useState(false);
   const [userDetail, setUserDetail] = useState(false);
   const [image, setImage] = useState('');
+  const [loading, setLoading] = useState(true);
 
 
   useEffect( () => {
     const getuser  = async () => {
       const currUser = await apiCall(`/api/users/current-user`)
 
-      if(currUser?.success)
-          setUserValue(currUser.data)
+      if(currUser?.success){
+        setUserValue(currUser.data)
+      }
+      setLoading(false);
     }
 
     getuser();
@@ -37,9 +41,11 @@ const UserProfile = () => {
   return (
     <>
       <Header />
-      <div className="flex min-h-161">
+      <div className="flex min-h-161 bg-gradient-to-br from-white via-yellow-100 to-pink-300">
         <Sidebar />
         <main className="p-3 w-full">
+          { loading ?
+           <Loader /> :
           <div className="bg-white rounded-xl shadow-xl overflow-hidden relative">
             {/* Cover Image */}
             <div className="relative h-56 bg-gray-200 group">
@@ -113,6 +119,7 @@ const UserProfile = () => {
               </div>
             </div>
           </div>
+          }
         </main>
       </div>
 

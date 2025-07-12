@@ -4,15 +4,21 @@ import Sidebar from '../../components/Sidebar';
 import { apiCall } from '../../utils/ApiCall';
 import { useNavigate } from 'react-router-dom';
 import { InfoIcon, Video } from 'lucide-react';
+import Loader from '../../assets/Loader';
 
 const UserDashboard = () => {
   const [channelStats, setChannelStats] = useState(null);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchStats = async () => {
       const stats = await apiCall('/api/dashboard/stats');
-      if (stats?.success) setChannelStats(stats.data);
+      if (stats?.success){
+        setChannelStats(stats.data);
+        setLoading(false)
+      } 
+        
     };
     fetchStats();
   }, []);
@@ -44,7 +50,7 @@ const UserDashboard = () => {
   return (
     <>
       <Header />
-      <div className="flex bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+      <div className="flex bg-gradient-to-br from-white via-yellow-100 to-pink-300 min-h-screen">
         <Sidebar />
 
         <main className="p-6 w-full">
@@ -52,8 +58,9 @@ const UserDashboard = () => {
           <h2 className="text-3xl font-bold text-gray-800 mb-6 flex items-center gap-2">
             <InfoIcon className="text-purple-600" /> Dashboard
           </h2>
-
-          {/* Stats Cards */}
+          
+          {loading ? 
+          <Loader /> :
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             {stats.map((stat, index) => (
               <div
@@ -69,6 +76,7 @@ const UserDashboard = () => {
               </div>
             ))}
           </div>
+          }
         </main>
       </div>
     </>

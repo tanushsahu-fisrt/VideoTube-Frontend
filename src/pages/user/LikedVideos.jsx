@@ -4,9 +4,11 @@ import { useNavigate } from "react-router-dom";
 import Header from "../../components/Header";
 import Sidebar from "../../components/Sidebar";
 import { Check } from "lucide-react";
+import Loader from "../../assets/Loader";
 
 const LikedVideos = () => {
   const [likedVideos, setLikedVideos] = useState([]);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -15,6 +17,9 @@ const LikedVideos = () => {
         const response = await axios.get(`/api/likes/videos`);
         if (response.data.success) {
           setLikedVideos(response.data.data);
+          setLoading(false)
+        }else{
+          setLoading(false)
         }
        
       } catch (error) {
@@ -28,11 +33,13 @@ const LikedVideos = () => {
   return (
     <>
     <Header />
-      <div className="flex min-h-161 bg-gray-50">
+      <div className="flex min-h-161 bg-gradient-to-br from-white via-yellow-100 to-pink-300">
         <Sidebar/>
       <div className="px-8 py-6 w-full">
       <h2 className="text-3xl font-bold mb-6 text-gray-800">Liked Videos</h2>
-      {likedVideos.length > 0 ? (
+      { loading ?
+      <Loader /> : 
+      likedVideos.length > 0 ? (
         <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {likedVideos.map( (obj) => (
             <div

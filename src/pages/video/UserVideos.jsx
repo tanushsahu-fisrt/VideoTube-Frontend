@@ -3,12 +3,15 @@ import Header from '../../components/Header';
 import Sidebar from '../../components/Sidebar';
 import { apiCall } from '../../utils/ApiCall';
 import { useNavigate } from 'react-router-dom';
+import Loader from '../../assets/Loader';
 
 
 
 const UserVideos = () => {
 
     const[videos,setVideo] = useState([]);
+    const[loading,setLoading] = useState(true);
+
     const navigate = useNavigate();
 
     useEffect( () => {
@@ -17,6 +20,7 @@ const UserVideos = () => {
 
             if(getVideos.success){
                 setVideo(getVideos.data);
+                setLoading(false);
             }
         }
         getAllVideo();
@@ -27,13 +31,16 @@ const UserVideos = () => {
   return (
     <>
       <Header />
-      <div className=" flex min-h-157">
+      <div className=" flex min-h-157
+      bg-gradient-to-br from-white via-yellow-100 to-pink-300">
         <Sidebar />
           
         <main className="p-3 w-full">
           <h1 className="text-3xl font-semibold mb-6 text-gray-800">{username} Video's</h1> 
 
-          {videos.length > 0 ? (
+          { loading ?
+          <Loader /> :
+          videos.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-4 
             max-h-[600px] overflow-y-scroll overflow-x-hidden 
             scroll-smooth hide-scrollbar">

@@ -5,6 +5,7 @@ import { apiCall } from '../../utils/ApiCall';
 import { Heart, Sparkle } from 'lucide-react';
 import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
+import Loader from '../../assets/Loader';
 
 const Tweets = () => {
 
@@ -12,6 +13,7 @@ const Tweets = () => {
   
   const [subscribedMap, setSubscribedMap] = useState({});
   const [likedMap, setLikedMap] = useState({});
+  const [loading, setLoading] = useState(true);
 
 
   const { userData } = useAuth();
@@ -24,8 +26,12 @@ const Tweets = () => {
       const allUserTweet = await apiCall('/api/tweets');
       const allUserLikedTweet = await apiCall('/api/likes/tweets');
 
-      if (allUserTweet?.success) 
+      if (allUserTweet?.success){
         setTweets(allUserTweet?.data);
+        setLoading(false);
+      }else{
+        setLoading(false)
+      } 
 
       if(allUserLikedTweet?.success){
         const likedTweet = allUserLikedTweet?.data;
@@ -76,22 +82,31 @@ const Tweets = () => {
   return (
     <>
       <Header />
-      <div className="flex bg-gray-100 min-h-screen">
+      <div className="flex bg-gradient-to-br from-white via-yellow-100 to-pink-300 min-h-screen">
         {/* Sidebar */}
         
         <Sidebar />
         <div className="px-8 py-6 w-full">
-          <main className="flex-1 flex justify-center py-6 px-4">
+          <h1 className="text-3xl font-semibold mb-6 text-gray-800">tweets</h1> 
+
+
+            <div
+            className="p-[2px] rounded-xl mt-1 shadow-2xl
+            "
+          >
+          <main className="flex-1 flex justify-center  px-3">
             <div
               className="w-full max-w-2xl
               max-h-[600px] overflow-y-scroll overflow-x-hidden scroll-smooth hide-scrollbar"
             >
-              {/* Tweets List */}
-              {tweets.length > 0 ? (
+              { loading ?
+              <Loader /> :
+              tweets.length > 0 ? (
                 tweets.map((ele) => (
                   <div
                     key={ele._id}
-                    className="bg-white rounded-xl shadow-sm p-4 mb-4 hover:shadow-md transition"
+                    className="bg-white
+                     rounded-xl shadow-sm p-4 mb-4 hover:shadow-md transition"
                   >
                     <div className="flex items-start gap-3">
                       <img
@@ -155,6 +170,7 @@ const Tweets = () => {
               )}
             </div>
           </main>
+          </div>
         </div>
       </div>
     </>
