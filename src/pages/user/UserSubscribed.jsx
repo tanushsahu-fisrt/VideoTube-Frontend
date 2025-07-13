@@ -45,6 +45,11 @@ const UserSubscribed = () => {
   fetchData();
 }, [userData?.data?.user?._id, activeTab]);
 
+  const handleTabClick = (tab) => {
+    setLoading(true);
+    setActiveTab(tab)
+  }
+
 
   return (
     <>
@@ -65,7 +70,7 @@ const UserSubscribed = () => {
             {['subscribedTo', 'mySubscribers'].map((tab) => (
               <button
                 key={tab}
-                onClick={() => setActiveTab(tab)}
+                onClick={() => handleTabClick(tab)}
                 className={`px-5 py-2 rounded-full text-sm font-medium border transition-all duration-300 ${
                   activeTab === tab
                     ? 'bg-blue-600 text-white border-blue-600'

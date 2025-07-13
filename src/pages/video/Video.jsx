@@ -96,14 +96,33 @@ const VideoPage = () => {
     }
   };
 
+  useEffect( () => {
+      const isSubscriber = async () => {
+        const channelId = video?.owner?._id;
+
+        const check = await axios.post(`/api/subscriptions/check/isSubscriber`,{
+          channelId : channelId
+        });
+        
+        if(check.data.data){
+          setSubscribedVideo(true)
+        }
+      }
+
+      isSubscriber();
+  },[])
+
   
   const handleSubscribtion = async () => {
     try {
       const channelId = video?.owner?._id;
       const res = await axios.post(`/api/subscriptions/c/${channelId}`);
-      if(Object.keys(res.data.data).length > 0)
+      if(Object.keys(res.data.data).length > 0){
         setSubscribedVideo(true);
-
+      }
+      else{
+        setSubscribedVideo(false)
+      }
     } catch (err) {
       console.log(err);
     }

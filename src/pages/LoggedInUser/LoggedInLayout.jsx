@@ -32,7 +32,7 @@ const Dashboard = () => {
             <div
               className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-4 
             max-h-[600px] overflow-y-scroll overflow-x-hidden scroll-smooth hide-scrollbar
-            rounded-xl bg-white p-4"
+            rounded-xl p-4"
             >
               {video &&
                 video.map((video, idx) => (
