@@ -44,7 +44,7 @@ const VideoPage = () => {
 
   useEffect(() => {
     getAllComment();
-  }, []);
+  }, );
 
   const fetchData = async () => {
     const endpoint = `/api/subscriptions/c/${userId}`
@@ -61,7 +61,7 @@ const VideoPage = () => {
   
   useEffect(() => {
     fetchData();
-  }, []);
+  }, );
 
   const toggleSwitch = () => {
     setIsOn(!isOn);
@@ -110,7 +110,7 @@ const VideoPage = () => {
       }
 
       isSubscriber();
-  },[])
+  },)
 
   
   const handleSubscribtion = async () => {

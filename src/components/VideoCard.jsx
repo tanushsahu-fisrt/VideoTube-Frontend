@@ -1,6 +1,6 @@
 import { Check, User } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import {  useNavigate } from 'react-router-dom';
 
 const VideoCard = ({ video }) => {
   const { isLogin } = useAuth();
@@ -10,17 +10,27 @@ const VideoCard = ({ video }) => {
     navigate(`/user/video/${id}`,{ state : {video : video } })
   }
 
+  const handleUserProfile = (id, username) => {
+      if(username){
+        navigate(`/c/@/${username}`,{ state : { channelId : id }})
+      }
+  }
+
   return (
     <div className="w-full sm:w-70 bg-white rounded-lg overflow-hidden shadow-md">
       {isLogin ? (
-        <div onClick={() => handleVideoClick(video?._id)}>
+        <div>
           <img
             src={video?.thumbnail}
             alt={video?.title}
             className="w-full h-36 object-cover"
+            onClick={() => handleVideoClick(video?._id)}
           />
           <div className="p-3 flex items-center ">
-              <h3 className="text-sm justify-center mb-1 truncate ">
+              <h3 
+              onClick={() => handleUserProfile(video?.owner?._id ,video?.owner?.username)}
+              className="text-sm justify-center mb-1 truncate cursor-pointer"
+              >
                 <img
                   src={video?.owner?.avatar}
                   alt={video?.owner?._id}
@@ -33,7 +43,10 @@ const VideoCard = ({ video }) => {
                   </span>
                 </p>
               </h3>
-            <div className='mx-5'>
+            <div 
+            className='mx-5'
+            onClick={() => handleVideoClick(video?._id)}
+            >
               <h3 className="text-sm font-semibold mb-1 truncate">
                 {video?.title}
               </h3>

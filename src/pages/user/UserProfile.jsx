@@ -27,7 +27,7 @@ const UserProfile = () => {
     }
 
     getuser();
-  })
+  },[])
 
   const UpdateImage = (img) => {
     setShowUpadetPopUpAvatar(true);
@@ -110,7 +110,7 @@ const UserProfile = () => {
                 </div>
                 <div className="flex justify-between items-center bg-gray-50 px-4 py-3 rounded-md shadow-sm">
                   <div>
-                    <p className=" font-semibold text-gray-500 text-xl">Username</p>
+                    <p className=" font-semibold text-gray-500 text-xl">FullName</p>
                     <p>{userValue?.fullName || 'Full Name'}</p>
                   </div>
                 </div>

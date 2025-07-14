@@ -23,7 +23,7 @@ const GuestHome = () => {
     },[])
 
     return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gradient-to-br from-white via-yellow-100 to-pink-300">
       <Header />
       <main className="p-6">
         <h2 className="text-2xl font-bold mb-6">Explore Trending Videos</h2>
