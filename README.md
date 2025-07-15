@@ -41,3 +41,7 @@ VideoTube is a full-stack video-sharing platform inspired by YouTube. It allows 
 - Cloudinary / Local Storage *(mention whichever you used)*
 - dotenv, cors, etc.
 
+🙋‍♂️ Author
+Tanush Sahu
+Backend Developer | MERN Stack
+<a href= "https://www.linkedin.com/in/tanush-sahu-8a8a1222a/">linkedin</a>
