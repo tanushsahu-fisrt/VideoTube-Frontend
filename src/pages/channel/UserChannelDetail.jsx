@@ -167,7 +167,7 @@ const { channelId} = location.state;
             `}
             onClick={() => setTabs('')}
             >
-                Tweets
+              Tweets
             </button>
           </div>
 
