@@ -30,7 +30,8 @@ const VideoPage = () => {
   const [subscribedVideo, setSubscribedVideo] = useState(false);
   const [isOn, setIsOn] = useState(video?.ispublished);
   const [subsLength, setSubsLength] = useState(null);
-  const [userId, setUserId] = useState(video?.owner?._id);
+  
+  const [likedCommentMap, setLikedCommentMap] = useState({});
 
   const handleVideoDelete = async () => {
     const res = await axios.delete(`/api/videos/${videoId}`);
@@ -39,14 +40,12 @@ const VideoPage = () => {
 
   const getAllComment = async () => {
     const res = await axios.get(`/api/comments/${videoId}`);
-    if (res.data.success) setComment(res.data.data);
+    if (res.data.success) 
+      setComment(res.data.data);
   };
 
-  useEffect(() => {
-    getAllComment();
-  }, []);
-
   const fetchData = async () => {
+    const userId = video?.owner?._id;
     const endpoint = `/api/subscriptions/c/${userId}`;
     try {
       const res = await apiCall(endpoint, 'GET');
@@ -59,8 +58,50 @@ const VideoPage = () => {
     }
   };
 
+  const isSubscriber = async () => {
+    const channelId = video?.owner?._id;
+
+    const check = await axios.post(`/api/subscriptions/check/isSubscriber`, {
+      channelId: channelId,
+    });
+
+    if (check.data.data) {
+      setSubscribedVideo(true);
+    }
+  }; 
+  
+  const isVideoLiked = async () => {
+
+    const check = await apiCall(`/api/likes/check/isLiked/${videoId}`,'POST')
+    
+    if (check.data) {
+      setLikedVideo(true);
+    }
+
+  };
+
+  const getLikedComment = async () => {
+    const res = await axios.get(`/api/likes/comments`);
+
+    if(Object.keys(res.data.data).length > 0 ){
+
+      const tempArr = {};
+      res.data?.data.forEach( (ele) => {
+          tempArr[ele?.comment] = true;
+      });
+
+      setLikedCommentMap(tempArr);
+    }
+      
+  };
+
   useEffect(() => {
     fetchData();
+    getAllComment();
+    isSubscriber();
+    isVideoLiked();
+    getLikedComment();
+
   }, []);
 
   const toggleSwitch = () => {
@@ -90,27 +131,15 @@ const VideoPage = () => {
   const handleVideoLike = async () => {
     try {
       const res = await axios.post(`/api/likes/toggle/v/${videoId}`);
-      setLikedVideo(Object.keys(res.data.data).length > 0);
+      if(Object.keys(res.data.data).length > 0){
+        setLikedVideo(true);
+      }else{
+        setLikedVideo(false)
+      }
     } catch (err) {
       console.log(err);
     }
   };
-
-  const isSubscriber = async () => {
-    const channelId = video?.owner?._id;
-
-    const check = await axios.post(`/api/subscriptions/check/isSubscriber`, {
-      channelId: channelId,
-    });
-
-    if (check.data.data) {
-      setSubscribedVideo(true);
-    }
-  };
-
-  useEffect(() => {
-    isSubscriber();
-  }, []);
 
   const handleSubscribtion = async () => {
     try {
@@ -140,7 +169,6 @@ const VideoPage = () => {
                   <video
                     src={video.videofile}
                     controls
-                    autoPlay
                     className="w-full h-full object-contain"
                   />
                 </div>
@@ -259,7 +287,7 @@ const VideoPage = () => {
           )}
 
           {/* Comments Section */}
-          <div className="px-6 py-3 overflow-y-scroll overflow-x-hidden scroll-smooth hide-scrollbar">
+          <div className="px-6 py-3 ">
             <h2 className="text-2xl font-bold mb-2 text-black">Comments</h2>
 
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
@@ -283,11 +311,14 @@ const VideoPage = () => {
 
             {/* Comments List */}
             {comment.length > 0 ? (
-              <div className="mt-6 flex flex-col gap-4 max-h-[300px] overflow-y-auto p-2 rounded-lg ">
+              <div className="mt-6 flex flex-col gap-4 
+              overflow-y-scroll overflow-x-hidden scroll-smooth hide-scrollbar
+              max-h-[300px]  p-2 rounded-lg ">
                 {comment.map((cmt) => (
                   <CommentCard
-                    key={cmt._id}
+                    key={cmt?._id}
                     cmt={cmt}
+                    likedCommentMap= {likedCommentMap}
                     getAllComment={getAllComment}
                   />
                 ))}

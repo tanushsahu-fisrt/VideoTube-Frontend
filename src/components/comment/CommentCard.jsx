@@ -1,20 +1,34 @@
 import { useEffect, useRef, useState } from 'react';
 import CommentActions from './CommentActions';
-import { Heart, MoreVertical } from 'lucide-react';
+import { Coins, Heart, MoreVertical } from 'lucide-react';
 import axios from 'axios';
 
-const CommentCard = ({ cmt, getAllComment }) => {
+const CommentCard = ({ likedCommentMap , cmt, getAllComment }) => {
+
+  const [likeComment, setLikeComment] = useState(false);
+  
+  useEffect( () => {
+    const arr = Object.keys(likedCommentMap);
+    for(let i = 0 ; i < arr.length ; i++){
+      if(cmt?._id == arr[i]){
+        setLikeComment(true);
+        break;
+      }
+    }
+
+  },[])
+
   const [option, setOption] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [newContent, setNewContent] = useState(cmt.content);
-  const [likeComment, setLikeComment] = useState(false);
-
+  
   const inputRef = useRef(null);
-
+  
   useEffect(() => {
     if (isEdit && inputRef.current) {
       inputRef.current.focus();
     }
+
   }, [isEdit]);
 
   const updateComment = async () => {
@@ -73,7 +87,14 @@ const CommentCard = ({ cmt, getAllComment }) => {
               </div>
             </div>
           ) : (
-            <p className="text-gray-800 text-sm">{cmt.content}</p>
+            <p className="text-md flex items-center gap-2">
+              <img 
+              className='w-8 h-8 rounded-full'
+              src={cmt?.owner?.avatar} 
+              alt={cmt?.owner?._id} 
+              />
+              {cmt.content}
+            </p>
           )}
         </div>
 
