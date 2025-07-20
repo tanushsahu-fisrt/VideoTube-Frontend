@@ -83,12 +83,12 @@ const Tweets = () => {
 
         <Sidebar />
         <div className="px-8 py-6 w-full">
-          <h1 className="text-3xl font-semibold mb-6 text-gray-800">tweets</h1>
+          <h1 className="text-3xl font-semibold mb-6 bg-white shadow-sm rounded-4xl text-center">Tweets</h1>
           <div className="p-[2px] rounded-xl mt-1">
             <main className="flex-1 flex justify-center  px-3">
               <div
                 className="w-full max-w-2xl
-              max-h-[600px] overflow-y-scroll overflow-x-hidden scroll-smooth hide-scrollbar"
+              max-h-[500px] overflow-y-scroll overflow-x-hidden scroll-smooth hide-scrollbar"
               >
                 {loading ? (
                   <Loader />
